@@ -1,0 +1,32 @@
+{
+  "name": "transplayer",
+  "version": "1.0.0",
+  "description": "transducent & mouse click through player",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --enable-transparent-visuals"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HsienYu/transplayer.git"
+  },
+  "keywords": [
+    "transparent",
+    "player"
+  ],
+  "author": "chenghsienyu",
+  "license": "Artistic-2.0",
+  "bugs": {
+    "url": "https://github.com/HsienYu/transplayer/issues"
+  },
+  "homepage": "https://github.com/HsienYu/transplayer#readme",
+  "devDependencies": {
+    "electron": "^6.0.12",
+    "electron-rebuild": "^1.8.6"
+  },
+  "dependencies": {
+    "gpu.js": "^2.1.0",
+    "nan": "^2.14.0",
+    "node-gyp": "^6.0.0"
+  }
+}
