@@ -1,7 +1,7 @@
 
 
 const videoElement = document.getElementById("vid");
-
+/* 
 const { GPU } = require('gpu.js');
 const gpu = new GPU();
 const kernel = gpu.createKernel(function (videoFrame) {
@@ -11,7 +11,7 @@ const kernel = gpu.createKernel(function (videoFrame) {
   .setGraphical(true)
   .setOutput([100, 100]);
 
-kernel(videoElement);
+kernel(videoElement); */
 
 /* 
 function render() {

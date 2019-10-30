@@ -1,6 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
+const net = require('net')
 
+let HOST = 'localhost'
+let PORT = 9999
 let win
+let currrentTime
 
 function createWindow() {
   // Create the browser window.
@@ -50,6 +54,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    client.end();
     app.quit()
   }
 })
@@ -65,6 +70,31 @@ app.on('activate', () => {
 })
 
 
+let previousTime;
+
 ipcMain.on('timecode', (event, arg) => {
-  console.log(arg);
+  currentTime = Math.trunc(arg);
+  if(currentTime != previousTime){
+    console.log('currentTime in secs: '+ currentTime)
+    if(currentTime == 1){
+      console.log('open browser')
+      client.write(JSON.stringify({ "id":'0', "type": 100, "args": {"x": 0, "y": 0}}));
+    }
+    if(currentTime == 3){
+      console.log('load url')
+      client.write(JSON.stringify({ "id":'0', "type": 101, "args": {url:"http://google.com"}}));
+    }
+    if(currentTime == 5){
+      console.log('resize window')
+      client.write(JSON.stringify({ "id":'0', "type": 105, "args": {target_width: 1080, target_height: 1920, move_duration: float = 0.3, drag_duration: float = 0.3}}));
+    }
+
+
+  }
+  previousTime = currentTime
+});
+
+
+var client = net.connect(PORT, HOST, ()=>{
+  console.log('conneting to server');
 });

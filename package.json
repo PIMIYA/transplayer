@@ -21,8 +21,7 @@
   },
   "homepage": "https://github.com/HsienYu/transplayer#readme",
   "devDependencies": {
-    "electron": "^6.0.12",
-    "electron-rebuild": "^1.8.6"
+    "electron": "^6.0.12"
   },
   "dependencies": {
     "gpu.js": "^2.1.0",
