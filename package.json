@@ -24,8 +24,6 @@
     "electron": "^6.0.12"
   },
   "dependencies": {
-    "gpu.js": "^2.1.0",
-    "nan": "^2.14.0",
     "node-gyp": "^6.0.0"
   }
 }
