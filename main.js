@@ -102,5 +102,5 @@ let previousTime;
 
 (async () => {
   let controller = new Controller();
-  controller.run(1);
+  await controller.run();
 })();
