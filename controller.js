@@ -416,23 +416,11 @@ class Controller {
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
         return await this._getLinkUrl(id, by, index);
     }
-
-    // TODO: test
-    async run() {
-        // await this.goTo(0, 'https://www.google.com.tw/search?tbm=isch&hl=en&q=meerkat');
-        await this.goTo(0, 'https://www.google.com/search?q=meerkat');
-        let url = await this.getGoogleSearchResultUrl(0, 0);
-        console.log(`${url}`);
-        url = await this.getGoogleSearchResultUrl(0, 1);
-        console.log(`${url}`);
-        url = await this.getGoogleSearchResultUrl(0, 2);
-        console.log(`${url}`);
-        console.log(`done`);
-    }
 }
 
 /** TODO:
  * - 控制 options 關閉 browser 上方控制資訊列
+ * - disable logging or using logging library to control the logging level
  * */
 
 module.exports = Controller;

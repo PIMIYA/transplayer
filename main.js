@@ -1,11 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
-const net = require('net')
 const Controller = require('./controller');
 
-let HOST = 'localhost'
-let PORT = 9999
 let win
-let currrentTime
 
 function createWindow() {
   // Create the browser window.
@@ -19,9 +15,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true
     }
-  })
-
-
+  });
 
   //add mouse press through
   win.setIgnoreMouseEvents(true)
@@ -41,14 +35,13 @@ function createWindow() {
   })
 }
 
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 
 //enable hardware acceleration
-app.disableHardwareAcceleration()
+app.disableHardwareAcceleration();
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -58,9 +51,7 @@ app.on('window-all-closed', () => {
     // client.end();
     app.quit()
   }
-})
-
-
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -68,39 +59,18 @@ app.on('activate', () => {
   if (win === null) {
     createWindow()
   }
-})
+});
 
-
-let previousTime;
-
-// ipcMain.on('timecode', (event, arg) => {
-//   currentTime = Math.trunc(arg);
-//   if (currentTime != previousTime) {
-//     console.log('currentTime in secs: ' + currentTime)
-//     if (currentTime == 1) {
-//       console.log('open browser')
-//       client.write(JSON.stringify({ "id": '0', "type": 100, "args": { "x": 0, "y": 0 } }));
-//     }
-//     if (currentTime == 3) {
-//       console.log('load url')
-//       client.write(JSON.stringify({ "id": '0', "type": 101, "args": { url: "http://google.com" } }));
-//     }
-//     if (currentTime == 5) {
-//       console.log('resize window')
-//       client.write(JSON.stringify({ "id": '0', "type": 105, "args": { target_width: 1080, target_height: 1920, move_duration: float = 0.3, drag_duration: float = 0.3 } }));
-//     }
-
-
-//   }
-//   previousTime = currentTime
-// });
-
-
-// var client = net.connect(PORT, HOST, () => {
-//   console.log('conneting to server');
-// });
-
+// TODO: TEST
 (async () => {
   let controller = new Controller();
-  await controller.run();
+  // await this.goTo(0, 'https://www.google.com.tw/search?tbm=isch&hl=en&q=meerkat');
+  await controller.goTo(0, 'https://www.google.com/search?q=meerkat');
+  let url = await controller.getGoogleSearchResultUrl(0, 0);
+  console.log(`${url}`);
+  url = await controller.getGoogleSearchResultUrl(0, 1);
+  console.log(`${url}`);
+  url = await controller.getGoogleSearchResultUrl(0, 2);
+  console.log(`${url}`);
+  console.log(`done`);
 })();

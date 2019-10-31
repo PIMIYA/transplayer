@@ -8,18 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HsienYu/transplayer.git"
+    "url": "https://github.com/PIMIYA/transplayer"
   },
   "keywords": [
     "transparent",
-    "player"
+    "player",
+    "selenium"
   ],
   "author": "chenghsienyu",
   "license": "Artistic-2.0",
   "bugs": {
-    "url": "https://github.com/HsienYu/transplayer/issues"
+    "url": "https://github.com/PIMIYA/transplayer/issues"
   },
-  "homepage": "https://github.com/HsienYu/transplayer#readme",
+  "homepage": "https://github.com/PIMIYA/transplayer",
   "devDependencies": {
     "electron": "^6.0.12"
   },
