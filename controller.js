@@ -1,8 +1,12 @@
 const { Builder, By, Key, until, WebDriver, WebElement } = require('selenium-webdriver');
 const path = require('path');
-const { ServiceBuilder } = require('selenium-webdriver/chrome');
 
-const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
+// const { ServiceBuilder } = require('selenium-webdriver/chrome');
+// const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
+
+const { ServiceBuilder } = require('selenium-webdriver/firefox');
+const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
+
 const serviceBuilder = new ServiceBuilder(driverPath);
 
 function sleep(ms) {
@@ -20,48 +24,6 @@ class Controller {
     constructor() {
         /** @type {object.<number|string, WebDriver>} */
         this.webDrivers = {};
-    }
-
-    /**
-     *
-     * @param {number|string} id
-     * @param {By} byLocator
-     * @param {number} index if index < 0 or undefined, it will get the random link
-     *
-     * @returns {Promise<WebElement|null>}
-     */
-    async _getWebElement(id, byLocator, index) {
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * Math.floor(max));
-        }
-
-        if (!byLocator) {
-            return null;
-        }
-
-        let driver = await this._getWebDriver(id, false)
-        if (driver == null) {
-            return null;
-        }
-
-        let links = await driver.findElements(byLocator);
-        if (links.length === 0) {
-            console.warn(`Can not get any link(s) from: ${byLocator.toString()}`);
-            return null;
-        }
-
-        console.log(`link length: ${links.length}`);
-        if (index === undefined | isNaN(index)) { index = -1; }
-        if (index < 0) {
-            // by random
-            index = getRandomInt(links.length);
-        } else {
-            // by index
-            index = Math.min(index, links.length - 1);
-        }
-
-        console.log(`Get index: ${index}`);
-        return links[index];
     }
 
     async _getPageHeight(id) {
@@ -87,6 +49,7 @@ class Controller {
         if (!driver) {
             return;
         }
+
         let rect = await element.getRect();
         let gap = Math.floor(rect.y / this.SCROLL_GAP);
         for (let i = 0; i < gap; i++) {
@@ -94,6 +57,7 @@ class Controller {
             // TODO: random sleep time maybe
             await sleep(this.SCROLL_INTERVAL)
         }
+        // await driver.executeScript("arguments[0].scrollIntoView();", element);
 
         await driver.actions({ bridge: true })
             .move({ duration: 50, origin: element, x: 0, y: 0 })
@@ -109,6 +73,8 @@ class Controller {
      * @returns {Promise<WebDriver|null>}
      */
     async _getWebDriver(id, createIfNotExists) {
+        const TIMEOUT = 1000 * 10;
+
         createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
             true :
             false;
@@ -118,9 +84,16 @@ class Controller {
                 return null;
             }
             this.webDrivers[id] = await new Builder()
-                .forBrowser('chrome')
-                .setChromeService(serviceBuilder)
+                // .forBrowser('chrome')
+                // .setChromeService(serviceBuilder)
+                .forBrowser('firefox')
+                .setFirefoxService(serviceBuilder)
                 .build();
+
+            await this.webDrivers[id].manage().setTimeouts({
+                implicit: TIMEOUT, pageLoad:
+                    TIMEOUT, script: TIMEOUT
+            });
         }
 
         if (!this.webDrivers[id]) {
@@ -164,7 +137,7 @@ class Controller {
                 by = By.tagName('a');
             }
 
-            let el = await this._getWebElement(id, by, index);
+            let el = await this.getWebElement(id, by, index);
             if (!el) { return; }
 
             return await el.getAttribute('href');
@@ -303,7 +276,7 @@ class Controller {
             let driver = await this._getWebDriver(id);
             if (!driver) { return false; }
 
-            let el = await this._getWebElement(id, byLocator);
+            let el = await this.getWebElement(id, byLocator);
             if (!el) { return false; }
 
             await driver.actions({ bridge: true })
@@ -329,7 +302,7 @@ class Controller {
             let driver = await this._getWebDriver(id);
             if (!driver) { return false; }
 
-            let el = await this._getWebElement(id, byLocator, index);
+            let el = await this.getWebElement(id, byLocator, index);
             if (!el) { return false; }
 
             await driver.actions({ bridge: true })
@@ -415,6 +388,48 @@ class Controller {
     async getGoogleSearchResultUrl(id, index) {
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
         return await this._getLinkUrl(id, by, index);
+    }
+
+    /**
+     *
+     * @param {number|string} id
+     * @param {By} byLocator
+     * @param {number} index if index < 0 or undefined, it will get the random link
+     *
+     * @returns {Promise<WebElement|null>}
+     */
+    async getWebElement(id, byLocator, index = 0) {
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+
+        if (!byLocator) {
+            return null;
+        }
+
+        let driver = await this._getWebDriver(id, false)
+        if (driver == null) {
+            return null;
+        }
+
+        let links = await driver.findElements(byLocator);
+        if (links.length === 0) {
+            console.warn(`Can not get any link(s) from: ${byLocator.toString()}`);
+            return null;
+        }
+
+        console.log(`link length: ${links.length}`);
+        if (index === undefined | isNaN(index)) { index = -1; }
+        if (index < 0) {
+            // by random
+            index = getRandomInt(links.length);
+        } else {
+            // by index
+            index = Math.min(index, links.length - 1);
+        }
+
+        console.log(`Get index: ${index}`);
+        return links[index];
     }
 }
 

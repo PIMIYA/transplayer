@@ -63,14 +63,23 @@ app.on('activate', () => {
 
 // TODO: TEST
 (async () => {
+  const { By } = require('selenium-webdriver');
+
   let controller = new Controller();
   // await this.goTo(0, 'https://www.google.com.tw/search?tbm=isch&hl=en&q=meerkat');
-  await controller.goTo(0, 'https://www.google.com/search?q=meerkat');
-  let url = await controller.getGoogleSearchResultUrl(0, 0);
-  console.log(`${url}`);
-  url = await controller.getGoogleSearchResultUrl(0, 1);
-  console.log(`${url}`);
-  url = await controller.getGoogleSearchResultUrl(0, 2);
-  console.log(`${url}`);
+  await controller.goTo(0, 'https://www.bbc.com/');
+  let el = await controller.getWebElement(0, By.tagName("a"), 200);
+
+  let rect = await el.getRect();
+  console.log(rect);
+
+  await controller._scrollAndClickElement(0, el);
+  // let url = await controller.getGoogleSearchResultUrl(0, 0);
+  // console.log(`${url}`);
+  // url = await controller.getGoogleSearchResultUrl(0, 1);
+  // console.log(`${url}`);
+  // url = await controller.getGoogleSearchResultUrl(0, 2);
+  // console.log(`${url}`);
+
   console.log(`done`);
 })();
