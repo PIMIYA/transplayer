@@ -1,5 +1,3 @@
-
-
 const videoElement = document.getElementById("vid");
 /* 
 const { GPU } = require('gpu.js');
@@ -20,11 +18,23 @@ function render() {
 }
 
 render(); */
+//let ipcRenderer = require('electron').ipcRenderer;
 
+const { ipcRenderer } = require('electron')
 
 videoElement.addEventListener('timeupdate', (event) => {
   var currentTime = videoElement.currentTime;
-  console.log(currentTime);
-  let ipcRenderer = require('electron').ipcRenderer;
+  //console.log(currentTime);
   ipcRenderer.send('timecode', currentTime);
 });
+
+
+ipcRenderer.on('ctrl', (event, arg) => {
+  console.log(arg);
+  if(arg == 'pause'){
+    videoElement.pause();
+  }else if(arg == 'play'){
+    videoElement.play();
+  }
+});
+
