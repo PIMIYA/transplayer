@@ -69,7 +69,7 @@ class Controller {
 
         await driver.actions({ bridge: true })
             // .move({ duration: 50, origin: element, x: 0, y: 0 })
-            .click()
+            .click(element)
             .perform();
     }
 
