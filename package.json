@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/PIMIYA/transplayer",
   "devDependencies": {
-    "electron": "^6.0.12"
+    "electron": "^6.1.2"
   },
   "dependencies": {
     "node-gyp": "^6.0.0",

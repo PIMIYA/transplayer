@@ -16,8 +16,8 @@ function sleep(ms) {
 }
 
 class Controller {
-    SCROLL_GAP = 300;
-    SCROLL_INTERVAL = 250;
+    SCROLL_GAP = 1;
+    SCROLL_INTERVAL = 10;
 
     XPATH_GOOGLE_SEARCH_RESULT_URL = "//div[contains(@class, 'srg')]//div[@class='g']/div/div[@class='rc']/div[@class='r']/a[1]";
 
@@ -42,6 +42,7 @@ class Controller {
      */
     async _scrollAndClickElement(id, element) {
         if (!element) {
+            console.log('not element')
             return;
         }
 
@@ -254,6 +255,7 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async setBrowserRect(id, rect) {
+        console.log(rect);
         try {
             let driver = await this._getWebDriver(id);
             if (!driver) { return false; }
