@@ -26,8 +26,8 @@ class Controller {
         this.webDrivers = {};
     }
 
-    async _getPageHeight(id) {
-        let driver = await this._getWebDriver(id);
+    async getPageHeight(id) {
+        let driver = await this.getWebDriver(id);
         if (!driver) {
             return;
         }
@@ -40,28 +40,35 @@ class Controller {
      * @param {number|string} id
      * @param {WebElement} element
      */
-    async _scrollAndClickElement(id, element) {
+    async scrollAndClickElement(id, element) {
         if (!element) {
             console.log('not element')
             return;
         }
 
-        let driver = await this._getWebDriver(id);
+        let driver = await this.getWebDriver(id);
         if (!driver) {
             return;
         }
 
+        let currentOffsetY = await driver.executeScript("return window.pageYOffset;");
+
         let rect = await element.getRect();
-        let gap = Math.floor(rect.y / this.SCROLL_GAP);
-        for (let i = 0; i < gap; i++) {
-            await driver.executeScript(`window.scrollBy(0, ${this.SCROLL_GAP})`);
+        let count = Math.floor(rect.y / this.SCROLL_GAP);
+        let gap = this.SCROLL_GAP * (rect.y > currentOffsetY ? 1 : -1);
+        if (Math.abs(rect.y - currentOffsetY) <= this.SCROLL_GAP) {
+            count = 0;
+        }
+
+        for (let i = 0; i < count; i++) {
+            await driver.executeScript(`window.scrollBy(0, ${gap})`);
             // TODO: random sleep time maybe
             await sleep(this.SCROLL_INTERVAL)
         }
         // await driver.executeScript("arguments[0].scrollIntoView();", element);
 
         await driver.actions({ bridge: true })
-            .move({ duration: 50, origin: element, x: 0, y: 0 })
+            // .move({ duration: 50, origin: element, x: 0, y: 0 })
             .click()
             .perform();
     }
@@ -73,7 +80,7 @@ class Controller {
      *
      * @returns {Promise<WebDriver|null>}
      */
-    async _getWebDriver(id, createIfNotExists) {
+    async getWebDriver(id, createIfNotExists) {
         const TIMEOUT = 1000 * 10;
 
         createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
@@ -111,9 +118,9 @@ class Controller {
      *
      * @returns {Promise<boolean>}
      */
-    async _executeScript(id, script) {
+    async executeScript(id, script) {
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             await driver.executeScript(script);
@@ -132,7 +139,7 @@ class Controller {
      *
      * @returns {Promise<string>}
      */
-    async _getLinkUrl(id, by, index) {
+    async getLinkUrl(id, by, index) {
         try {
             if (by === undefined) {
                 by = By.tagName('a');
@@ -156,7 +163,7 @@ class Controller {
      */
     async openBrowser(id) {
         try {
-            let driver = await this._getWebDriver(id, true);
+            let driver = await this.getWebDriver(id, true);
             return !!driver;
         } catch (error) {
             console.error(error);
@@ -172,7 +179,7 @@ class Controller {
      */
     async closeBrowser(id) {
         try {
-            let driver = await this._getWebDriver(id, false);
+            let driver = await this.getWebDriver(id, false);
             if (driver) {
                 this.webDrivers[id] = null;
                 driver.close();
@@ -194,7 +201,7 @@ class Controller {
      */
     async goTo(id, url) {
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             await driver.get(url);
@@ -212,7 +219,7 @@ class Controller {
      */
     async scrollTo(id, pixelHeight) {
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) {
                 return;
             }
@@ -235,7 +242,7 @@ class Controller {
      */
     async maximizeBrowser(id) {
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             await driver.manage().window().maximize();
@@ -257,7 +264,7 @@ class Controller {
     async setBrowserRect(id, rect) {
         console.log(rect);
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             await driver.manage().window().setRect(rect);
@@ -275,7 +282,7 @@ class Controller {
      */
     async clickRandomElement(id, byLocator) {
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             let el = await this.getWebElement(id, byLocator);
@@ -301,7 +308,7 @@ class Controller {
      */
     async clickElement(id, byLocator, index) {
         try {
-            let driver = await this._getWebDriver(id);
+            let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             let el = await this.getWebElement(id, byLocator, index);
@@ -343,7 +350,7 @@ class Controller {
         if(el) el.scroll(0, ${offset});
         `;
 
-        return await this._executeScript(id, script);
+        return await this.executeScript(id, script);
     }
 
     /**
@@ -377,7 +384,7 @@ class Controller {
      */
     async getRandomGoogleSearchResultUrl(id) {
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
-        return await this._getLinkUrl(id, by);
+        return await this.getLinkUrl(id, by);
     }
 
     /**
@@ -389,7 +396,7 @@ class Controller {
      */
     async getGoogleSearchResultUrl(id, index) {
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
-        return await this._getLinkUrl(id, by, index);
+        return await this.getLinkUrl(id, by, index);
     }
 
     /**
@@ -409,7 +416,7 @@ class Controller {
             return null;
         }
 
-        let driver = await this._getWebDriver(id, false)
+        let driver = await this.getWebDriver(id, false)
         if (driver == null) {
             return null;
         }

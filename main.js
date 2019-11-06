@@ -86,7 +86,7 @@ ipcMain.on('timecode', (event, arg)=>{
         await controller.scrollTo(0, 7680);
         //let el_bbc = await controller.getWebElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'),0);
         //let rect = await el_bbc.getRect();
-        await controller._scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
+        await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
         //let el_sig = await controller.getWebElement(1, By.xpath('/html/body/div[7]/div/section/div/section/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div/div/a'),0);
         //await controller.clickElement(1, el_sig,0);
       })();
