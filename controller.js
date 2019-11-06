@@ -66,9 +66,12 @@ class Controller {
             await sleep(this.SCROLL_INTERVAL)
         }
         // await driver.executeScript("arguments[0].scrollIntoView();", element);
+        currentOffsetY = await driver.executeScript("return window.pageYOffset;");
+        let reminderGap = rect.y - currentOffsetY;
+        await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({ bridge: true })
-            // .move({ duration: 50, origin: element, x: 0, y: 0 })
+            .move({ duration: 50, origin: element, x: 0, y: 0 })
             .click(element)
             .perform();
     }
