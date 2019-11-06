@@ -6,7 +6,6 @@ let controller = new Controller();
 let win
 let previousTime
 
-
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
@@ -65,18 +64,19 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('timecode', (event, arg)=>{
+ipcMain.on('timecode', (event, arg) => {
+  return;
   currentTime = Math.trunc(arg)
-  if (currentTime != previousTime){
+  if (currentTime != previousTime) {
     console.log('current time in sec: ', currentTime)
-    if(currentTime == 0){
+    if (currentTime == 0) {
       console.log('wait for intro task finished');
-      (async ()=>{
+      (async () => {
         //set up two news pages
         await controller.openBrowser(0);
-        await controller.setBrowserRect(0, {x:0, y:0, width:1080, height: 2160});
+        await controller.setBrowserRect(0, { x: 0, y: 0, width: 1080, height: 2160 });
         await controller.openBrowser(1);
-        await controller.setBrowserRect(1, {x:1080, y:0, width:1080, height: 2160});
+        await controller.setBrowserRect(1, { x: 1080, y: 0, width: 1080, height: 2160 });
         //load url in two pages
         await controller.goTo(0, 'https://www.bbc.com/');
         await controller.goTo(1, 'https://www.straitstimes.com/global');
@@ -96,32 +96,28 @@ ipcMain.on('timecode', (event, arg)=>{
   event.reply('ctrl', 'pause')
 });
 
-
-
-//delay
-const delay = (interval) =>{
-  return new Promise((resolve) =>{
+// delay
+const delay = (interval) => {
+  return new Promise((resolve) => {
     setTimeout(resolve, interval)
-  })
+  });
 }
 
-// TODO: TEST
-/* (async () => {
-  //await controller.goTo(0, 'https://www.bbc.com/');
-  //let el = await controller.getWebElement(0, By.tagName("a"), 200);
-  //let el2 = await controller.getWebElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'),0);
+(async () => {
+  return; // comment this line to test
+  console.log('start test');
 
-  //let rect = await el2.getRect();
-  //console.log(rect);
-  //await controller._scrollAndClickElement(0, el2);
-  //await controller.clickElement(0, By.xpath('/html/body/div[3]/div[6]'),0);
-  //await controller.clickElement(0, By.className('p_hiddenElement'),0)
-  // let url = await controller.getGoogleSearchResultUrl(0, 0);
-  // console.log(`${url}`);
-  // url = await controller.getGoogleSearchResultUrl(0, 1);
-  // console.log(`${url}`);
-  // url = await controller.getGoogleSearchResultUrl(0, 2);
-  // console.log(`${url}`);
+  await controller.openBrowser(0);
+  await controller.setBrowserRect(0, { x: 0, y: 0, width: 1080, height: 800 });
+  await controller.goTo(0, 'https://www.bbc.com/');
+  controller.SCROLL_GAP = 100;
+  controller.SCROLL_INTERVAL = 50;
+  // await controller.scrollTo(0, 7680);
+  await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
+  await controller.switchToFrame(0, By.id('smphtml5iframeplayer'));
+  await delay(1000);
+  await controller.clickElement(0, By.id('mediaContainer'), 0);
+  await controller.switchToDefault(0);
 
-  console.log(`done`);
-})(); */
+  console.log('end test');
+})();
