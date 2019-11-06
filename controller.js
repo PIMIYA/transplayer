@@ -38,9 +38,13 @@ class Controller {
     /**
      *
      * @param {number|string} id
-     * @param {WebElement} element
+     * @param {WebElement|By} element
      */
     async scrollAndClickElement(id, element) {
+        if (element.constructor.name !== 'WebElement') {
+            element = await this.getWebElement(0, element);
+        }
+
         if (!element) {
             console.log('not element')
             return;
@@ -84,7 +88,7 @@ class Controller {
      * @returns {Promise<WebDriver|null>}
      */
     async getWebDriver(id, createIfNotExists) {
-        const TIMEOUT = 1000 * 10;
+        const TIMEOUT = 1000 * 5;
 
         createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
             true :
@@ -102,8 +106,7 @@ class Controller {
                 .build();
 
             await this.webDrivers[id].manage().setTimeouts({
-                implicit: TIMEOUT, pageLoad:
-                    TIMEOUT, script: TIMEOUT
+                implicit: TIMEOUT
             });
         }
 
@@ -292,8 +295,8 @@ class Controller {
             if (!el) { return false; }
 
             await driver.actions({ bridge: true })
-                .move({ x: 0, y: 0, origin: el })
-                .click(el)
+                .move({ duration: 50, origin: el, x: 0, y: 0 })
+                .click()
                 .perform();
 
             return true;
@@ -308,19 +311,32 @@ class Controller {
      * @param {number|string} id
      * @param {By} byLocator
      * @param {number} index
+     * @param {{offset: {x: number, y: number}, justClick: boolean}} option
      */
-    async clickElement(id, byLocator, index) {
+    async clickElement(id, byLocator, index = 0, option = {}) {
         try {
+            option = option || {};
+            let offset = option.offset || { x: 0, y: 0 };
+            offset.x = offset.x !== undefined ? offset.x : 0;
+            offset.y = offset.y !== undefined ? offset.y : 0;
+            let justClick = option.justClick !== undefined ? option.justClick : false;
+
             let driver = await this.getWebDriver(id);
             if (!driver) { return false; }
 
             let el = await this.getWebElement(id, byLocator, index);
             if (!el) { return false; }
+            console.log(await el.getRect());
 
-            await driver.actions({ bridge: true })
-                .move({ x: 0, y: 0, origin: el })
-                .click(el)
-                .perform();
+            if (justClick) {
+                await el.click();
+            }
+            else {
+                await driver.actions({ bridge: true })
+                    .move({ duration: 50, origin: el, x: offset.x, y: offset.y })
+                    .click(el)
+                    .perform();
+            }
 
             return true;
         } catch (error) {
@@ -442,6 +458,45 @@ class Controller {
 
         console.log(`Get index: ${index}`);
         return links[index];
+    }
+
+    /**
+     *
+     * @param {number|string} id
+     * @param {By} byLocator
+     * @param {number} index default is 0
+     *
+     * @returns {Promise<boolean>}
+     */
+    async switchToFrame(id, byLocator, index = 0) {
+        if (!byLocator) {
+            return false;
+        }
+
+        let driver = await this.getWebDriver(id, false)
+        if (driver == null) {
+            return false;
+        }
+
+        let ele = await this.getWebElement(id, byLocator, index);
+        await driver.switchTo().frame(ele);
+        return true;
+    }
+
+    /**
+     *
+     * @param {number|string} id
+     *
+     * @returns {Promise<boolean>}
+     */
+    async switchToDefault(id) {
+        let driver = await this.getWebDriver(id, false)
+        if (driver == null) {
+            return false;
+        }
+
+        await driver.switchTo().defaultContent();
+        return true;
     }
 }
 
