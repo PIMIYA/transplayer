@@ -4,7 +4,7 @@ const path = require('path');
 // const { ServiceBuilder } = require('selenium-webdriver/chrome');
 // const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
 
-const { ServiceBuilder } = require('selenium-webdriver/firefox');
+const { ServiceBuilder, Options } = require('selenium-webdriver/firefox');
 const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
 
 const serviceBuilder = new ServiceBuilder(driverPath);
@@ -99,11 +99,14 @@ class Controller {
                 console.error("Get a null driver");
                 return null;
             }
+            let options = new Options();
+            options.setPreference("dom.webnotifications.enabled", false);
             this.webDrivers[id] = await new Builder()
                 // .forBrowser('chrome')
                 // .setChromeService(serviceBuilder)
                 .forBrowser('firefox')
                 .setFirefoxService(serviceBuilder)
+                .setFirefoxOptions(options)
                 .build();
 
             await this.webDrivers[id].manage().setTimeouts({
