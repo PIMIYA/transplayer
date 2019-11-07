@@ -116,8 +116,8 @@ ipcMain.on('timecode', (event, arg) => {
         //console.log(ctrl_state.stat);
       }else if(currentTime == 60){
         await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
-        //await controller.setBrowserRect(4, { x: 0, y: 0, width: 2160, height: 1920 });
-        await controller.maximizeBrowser(4);
+        await controller.setBrowserRect(4, { x: 0, y: 0, width: 2160, height: 1920 });
+        //await controller.maximizeBrowser(4);
         controller.SCROLL_GAP = 1;
         controller.SCROLL_INTERVAL = 5;
         await controller.scrollTo(4, 3000);
