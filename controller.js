@@ -425,7 +425,7 @@ class Controller {
      *
      * @returns {Promise<string>}
      */
-    async getRandomGoogleNewSearchResultUrl(id) {
+    async getRandomGoogleNewsSearchResultUrl(id) {
         const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
         return await this.getLinkUrl(id, by);
     }
@@ -437,7 +437,7 @@ class Controller {
      *
      * @returns {Promise<string>}
      */
-    async getRandomGoogleNewSearchResultUrl(id, index) {
+    async getGoogleNewsSearchResultUrl(id, index) {
         const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
         return await this.getLinkUrl(id, by, index);
     }
