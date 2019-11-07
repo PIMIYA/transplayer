@@ -20,6 +20,7 @@ class Controller {
     SCROLL_INTERVAL = 10;
 
     XPATH_GOOGLE_SEARCH_RESULT_URL = "//div[contains(@class, 'srg')]//div[@class='g']/div/div[@class='rc']/div[@class='r']/a[1]";
+    XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL = `//div[@id="search"]//div[@id="rso"]/div/div[@class="g"]/div/div/h3/a`;
 
     constructor() {
         /** @type {object.<number|string, WebDriver>} */
@@ -415,6 +416,29 @@ class Controller {
      */
     async getGoogleSearchResultUrl(id, index) {
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
+        return await this.getLinkUrl(id, by, index);
+    }
+
+    /**
+     *
+     * @param {number|string} id
+     *
+     * @returns {Promise<string>}
+     */
+    async getRandomGoogleNewSearchResultUrl(id) {
+        const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
+        return await this.getLinkUrl(id, by);
+    }
+
+    /**
+     *
+     * @param {number|string} id
+     * @param {number} index
+     *
+     * @returns {Promise<string>}
+     */
+    async getRandomGoogleNewSearchResultUrl(id, index) {
+        const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
         return await this.getLinkUrl(id, by, index);
     }
 
