@@ -33,8 +33,10 @@ ipcRenderer.on('ctrl', (event, arg) => {
   console.log(arg);
   if(arg == 'pause'){
     videoElement.pause();
+    console.log('pause video');
   }else if(arg == 'play'){
     videoElement.play();
+    console.log('play video');
   }
 });
 

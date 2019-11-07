@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const Controller = require('./controller');
 const { By } = require('selenium-webdriver');
+const ctrl_state = {};
+
 
 let controller = new Controller();
 let win
@@ -27,7 +29,7 @@ function createWindow() {
   win.loadFile('app/index.html')
 
   // Open the DevTools.
-  //win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -65,7 +67,8 @@ app.on('activate', () => {
 });
 
 ipcMain.on('timecode', (event, arg) => {
-  return;
+  //return;
+  console.log('current state:', ctrl_state.stat);
   currentTime = Math.trunc(arg)
   if (currentTime != previousTime) {
     console.log('current time in sec: ', currentTime)
@@ -80,22 +83,64 @@ ipcMain.on('timecode', (event, arg) => {
         //load url in two pages
         await controller.goTo(0, 'https://www.bbc.com/');
         await controller.goTo(1, 'https://www.straitstimes.com/global');
-        controller.SCROLL_GAP = 100;
-        controller.SCROLL_INTERVAL = 350;
+        controller.SCROLL_GAP = 50;
+        controller.SCROLL_INTERVAL = 10;
         await controller.goTo(1, 'https://www.straitstimes.com/singapore');
-        await controller.scrollTo(0, 7680);
-        //let el_bbc = await controller.getWebElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'),0);
-        //let rect = await el_bbc.getRect();
+        await controller.scrollTo(0, 7758);
         await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
-        //let el_sig = await controller.getWebElement(1, By.xpath('/html/body/div[7]/div/section/div/section/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div/div/a'),0);
-        //await controller.clickElement(1, el_sig,0);
+        await controller.switchToFrame(0, By.id('smphtml5iframeplayer'));
+        await delay(1000);
+        await controller.clickElement(0, By.id('mediaContainer'), 0);
+        await controller.switchToDefault(0);
+        //???
+       //await controller.clickElement(1, By.xpath('/html/body/div[7]/div/section/div/section/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div/div/a'), 0);
+        //lauch new window
+        await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+        await controller.setBrowserRect(2, {x:1080, y:960, width:800, height:600});
+        //???
+        //let url_world_elephant = await controller.getGoogleSearchResultUrl(2, 1);
+        //await controller.goTo(2, url_world_elephant);
+        //lauch new window
+        await controller.goTo(3, 'https://news.google.com/search?q=elephant&hl=en-SG&gl=SG&ceid=SG%3Aen');
+        await controller.setBrowserRect(3, {x: 200, y:200, width:800, height:600});
+        //???
+        //let url_asia_elephant = await controller.getGoogleSearchResultUrl(3, 1);
+        //await controller.goTo(3, url_asia_elephant);
+        //wait and close all windows
+        await delay(3000);
+        await controller.closeBrowser(2);
+        await delay(3000);
+        await controller.closeBrowser(1);
+        await delay(3000);
+        await controller.closeBrowser(3);
+        await delay(3000);
+        await controller.closeBrowser(0);
+        await delay(1000);
+        await stateChange(1);
+        console.log(ctrl_state.stat);
       })();
+    }else if(currentTime = 1){
+
+      //start to do main things
     }
   }
-  previousTime = currentTime
-  event.reply('ctrl', 'pause')
+  previousTime = currentTime;
+  if(ctrl_state.stat == 0){
+    event.reply('ctrl', 'pause')
+  }else if(ctrl_state.stat == 1){
+    event.reply('ctrl', 'play');
+  }
 });
 
+
+function stateChange(arg){
+  Object.defineProperty(ctrl_state, 'stat', {
+    value: arg,
+    writable: true
+  });
+}
+
+stateChange(0);
 // delay
 const delay = (interval) => {
   return new Promise((resolve) => {
@@ -103,7 +148,7 @@ const delay = (interval) => {
   });
 }
 
-(async () => {
+/* (async () => {
   return; // comment this line to test
   console.log('start test');
 
@@ -112,7 +157,7 @@ const delay = (interval) => {
   await controller.goTo(0, 'https://www.bbc.com/');
   controller.SCROLL_GAP = 100;
   controller.SCROLL_INTERVAL = 50;
-  // await controller.scrollTo(0, 7680);
+  await controller.scrollTo(0, 7680);
   await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
   await controller.switchToFrame(0, By.id('smphtml5iframeplayer'));
   await delay(1000);
@@ -121,3 +166,4 @@ const delay = (interval) => {
 
   console.log('end test');
 })();
+ */
