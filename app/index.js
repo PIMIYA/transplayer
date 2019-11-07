@@ -29,7 +29,7 @@ videoElement.addEventListener('timeupdate', (event) => {
 });
 
 
-ipcRenderer.on('ctrl', (event, arg) => {
+/* ipcRenderer.on('ctrl', (event, arg) => {
   console.log(arg);
   if(arg == 'pause'){
     videoElement.pause();
@@ -38,5 +38,5 @@ ipcRenderer.on('ctrl', (event, arg) => {
     videoElement.play();
     console.log('play video');
   }
-});
+}); */
 
