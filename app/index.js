@@ -18,8 +18,6 @@ function render() {
 }
 
 render(); */
-//let ipcRenderer = require('electron').ipcRenderer;
-
 const { ipcRenderer } = require('electron')
 
 videoElement.addEventListener('timeupdate', (event) => {
@@ -27,16 +25,4 @@ videoElement.addEventListener('timeupdate', (event) => {
   //console.log(currentTime);
   ipcRenderer.send('timecode', currentTime);
 });
-
-
-/* ipcRenderer.on('ctrl', (event, arg) => {
-  console.log(arg);
-  if(arg == 'pause'){
-    videoElement.pause();
-    console.log('pause video');
-  }else if(arg == 'play'){
-    videoElement.play();
-    console.log('play video');
-  }
-}); */
 

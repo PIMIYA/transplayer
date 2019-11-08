@@ -15,6 +15,7 @@ function sleep(ms) {
     })
 }
 
+
 class Controller {
     SCROLL_GAP = 1;
     SCROLL_INTERVAL = 10;
