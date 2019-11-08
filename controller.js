@@ -1,13 +1,28 @@
-const { Builder, By, Key, until, WebDriver, WebElement } = require('selenium-webdriver');
+const {
+    Builder,
+    By,
+    Key,
+    until,
+    WebDriver,
+    WebElement
+} = require('selenium-webdriver');
 const path = require('path');
 
-// const { ServiceBuilder } = require('selenium-webdriver/chrome');
-// const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
-
-const { ServiceBuilder, Options } = require('selenium-webdriver/firefox');
-const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
+const {
+    ServiceBuilder,
+    Options
+} = require('selenium-webdriver/chrome');
+const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
+// const {
+//     ServiceBuilder,
+//     Options
+// } = require('selenium-webdriver/firefox');
+//const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
 
 const serviceBuilder = new ServiceBuilder(driverPath);
+
+
+
 
 function sleep(ms) {
     return new Promise(resolve => {
@@ -76,8 +91,15 @@ class Controller {
         let reminderGap = rect.y - currentOffsetY;
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
-        await driver.actions({ bridge: true })
-            .move({ duration: 50, origin: element, x: 0, y: 0 })
+        await driver.actions({
+                bridge: true
+            })
+            .move({
+                duration: 50,
+                origin: element,
+                x: 0,
+                y: 0
+            })
             .click(element)
             .perform();
     }
@@ -100,14 +122,16 @@ class Controller {
                 console.error("Get a null driver");
                 return null;
             }
-            let options = new Options();
-            options.setPreference("dom.webnotifications.enabled", false);
+            //let options = new Options();
+            //options.setPreference("dom.webnotifications.enabled", false);
+            //options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
+            //options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
             this.webDrivers[id] = await new Builder()
-                // .forBrowser('chrome')
-                // .setChromeService(serviceBuilder)
-                .forBrowser('firefox')
-                .setFirefoxService(serviceBuilder)
-                .setFirefoxOptions(options)
+                .forBrowser('chrome')
+                .setChromeService(serviceBuilder)
+                //.forBrowser('firefox')
+                //.setFirefoxService(serviceBuilder)
+                //.setFirefoxOptions(options)
                 .build();
 
             await this.webDrivers[id].manage().setTimeouts({
@@ -132,7 +156,9 @@ class Controller {
     async executeScript(id, script) {
         try {
             let driver = await this.getWebDriver(id);
-            if (!driver) { return false; }
+            if (!driver) {
+                return false;
+            }
 
             await driver.executeScript(script);
             return true;
@@ -157,7 +183,9 @@ class Controller {
             }
 
             let el = await this.getWebElement(id, by, index);
-            if (!el) { return; }
+            if (!el) {
+                return;
+            }
 
             return await el.getAttribute('href');
         } catch (error) {
@@ -213,7 +241,9 @@ class Controller {
     async goTo(id, url) {
         try {
             let driver = await this.getWebDriver(id);
-            if (!driver) { return false; }
+            if (!driver) {
+                return false;
+            }
 
             await driver.get(url);
             return true;
@@ -254,7 +284,9 @@ class Controller {
     async maximizeBrowser(id) {
         try {
             let driver = await this.getWebDriver(id);
-            if (!driver) { return false; }
+            if (!driver) {
+                return false;
+            }
 
             await driver.manage().window().maximize();
 
@@ -276,7 +308,9 @@ class Controller {
         console.log(rect);
         try {
             let driver = await this.getWebDriver(id);
-            if (!driver) { return false; }
+            if (!driver) {
+                return false;
+            }
 
             await driver.manage().window().setRect(rect);
             return true;
@@ -294,13 +328,24 @@ class Controller {
     async clickRandomElement(id, byLocator) {
         try {
             let driver = await this.getWebDriver(id);
-            if (!driver) { return false; }
+            if (!driver) {
+                return false;
+            }
 
             let el = await this.getWebElement(id, byLocator);
-            if (!el) { return false; }
+            if (!el) {
+                return false;
+            }
 
-            await driver.actions({ bridge: true })
-                .move({ duration: 50, origin: el, x: 0, y: 0 })
+            await driver.actions({
+                    bridge: true
+                })
+                .move({
+                    duration: 50,
+                    origin: el,
+                    x: 0,
+                    y: 0
+                })
                 .click()
                 .perform();
 
@@ -321,24 +366,37 @@ class Controller {
     async clickElement(id, byLocator, index = 0, option = {}) {
         try {
             option = option || {};
-            let offset = option.offset || { x: 0, y: 0 };
+            let offset = option.offset || {
+                x: 0,
+                y: 0
+            };
             offset.x = offset.x !== undefined ? offset.x : 0;
             offset.y = offset.y !== undefined ? offset.y : 0;
             let justClick = option.justClick !== undefined ? option.justClick : false;
 
             let driver = await this.getWebDriver(id);
-            if (!driver) { return false; }
+            if (!driver) {
+                return false;
+            }
 
             let el = await this.getWebElement(id, byLocator, index);
-            if (!el) { return false; }
+            if (!el) {
+                return false;
+            }
             console.log(await el.getRect());
 
             if (justClick) {
                 await el.click();
-            }
-            else {
-                await driver.actions({ bridge: true })
-                    .move({ duration: 50, origin: el, x: offset.x, y: offset.y })
+            } else {
+                await driver.actions({
+                        bridge: true
+                    })
+                    .move({
+                        duration: 50,
+                        origin: el,
+                        x: offset.x,
+                        y: offset.y
+                    })
                     .click(el)
                     .perform();
             }
@@ -475,7 +533,9 @@ class Controller {
         }
 
         console.log(`link length: ${links.length}`);
-        if (index === undefined | isNaN(index)) { index = -1; }
+        if (index === undefined | isNaN(index)) {
+            index = -1;
+        }
         if (index < 0) {
             // by random
             index = getRandomInt(links.length);
