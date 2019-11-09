@@ -8,28 +8,27 @@ const {
 } = require('selenium-webdriver');
 const path = require('path');
 
+/** chrome */
 const {
     ServiceBuilder,
     Options
 } = require('selenium-webdriver/chrome');
 const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
+
+/** firefox */
 // const {
 //     ServiceBuilder,
 //     Options
 // } = require('selenium-webdriver/firefox');
-//const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
+// const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
 
 const serviceBuilder = new ServiceBuilder(driverPath);
-
-
-
 
 function sleep(ms) {
     return new Promise(resolve => {
         setTimeout(resolve, ms)
     })
 }
-
 
 class Controller {
     SCROLL_GAP = 1;
@@ -39,8 +38,14 @@ class Controller {
     XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL = `//div[@id="search"]//div[@id="rso"]/div/div[@class="g"]/div/div/h3/a`;
 
     constructor() {
-        /** @type {object.<number|string, WebDriver>} */
+        /** @type {Object.<number, WebDriver>} */
         this.webDrivers = {};
+
+        /** @type {Object.<number, number>} */
+        this.driverScrollState = {};
+
+        /** @type {boolean} default is true */
+        this.useLocalProfile = true;
     }
 
     async getPageHeight(id) {
@@ -54,7 +59,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {WebElement|By} element
      */
     async scrollAndClickElement(id, element) {
@@ -92,8 +97,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-                bridge: true
-            })
+            bridge: true
+        })
             .move({
                 duration: 50,
                 origin: element,
@@ -106,8 +111,8 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
-     * @param {boolean} createIfNotExists
+     * @param {number} id
+     * @param {boolean} createIfNotExists default is `true`
      *
      * @returns {Promise<WebDriver|null>}
      */
@@ -117,21 +122,32 @@ class Controller {
         createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
             true :
             false;
+
+        let useLocalProfile = (this.useLocalProfile === undefined | this.useLocalProfile) ?
+            true :
+            false;
+
         if (!this.webDrivers[id]) {
             if (!createIfNotExists) {
                 console.error("Get a null driver");
                 return null;
             }
+
             let options = new Options();
-            //options.setProxy(null);
-            options.addArguments(["--proxy-server='direct://'",
-                "--proxy-bypass-list=*",
-                `--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`,
-                // `--profile-directory=SE_${id}`
-            ]);
-            //options.setPreference("dom.webnotifications.enabled", false);
-            //options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
-            //options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
+            // chrome options
+            var args = ["--proxy-server='direct://'",
+                "--proxy-bypass-list=*"
+            ];
+            if (useLocalProfile) {
+                args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
+            }
+            options.addArguments(args);
+
+            // firefox options
+            // options.setPreference("dom.webnotifications.enabled", false);
+            // options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
+            // options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
+
             this.webDrivers[id] = await new Builder()
                 .forBrowser('chrome')
                 .setChromeService(serviceBuilder)
@@ -155,7 +171,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {string} script
      *
      * @returns {Promise<boolean>}
@@ -177,7 +193,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {By|null} by if null, the default value is By.tagName('a')
      * @param {number|null} index if index < 0 or undefined, it will get the random link
      *
@@ -203,7 +219,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      *
      * @returns {Promise<boolean>}
      */
@@ -219,7 +235,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      *
      * @returns {Promise<boolean>}
      */
@@ -240,7 +256,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {string} url
      *
      * @returns {Promise<boolean>}
@@ -260,9 +276,10 @@ class Controller {
         }
     }
 
+    _scrollState = 0;
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {number} pixelHeight
      */
     async scrollTo(id, pixelHeight) {
@@ -272,8 +289,15 @@ class Controller {
                 return;
             }
 
+            this.driverScrollState[id] = 0;
             let gap = Math.floor(pixelHeight / this.SCROLL_GAP);
             for (let i = 0; i < gap; i++) {
+                console.log(this.driverScrollState[id]);
+                if (this.driverScrollState[id] == -1) {
+                    console.log('scroll to is break');
+                    return;
+                }
+
                 await driver.executeScript(`window.scrollBy(0, ${this.SCROLL_GAP})`);
                 await sleep(this.SCROLL_INTERVAL)
             }
@@ -281,12 +305,29 @@ class Controller {
         } catch (error) {
             console.error(error);
             return false;
+        } finally {
+            this.driverScrollState[id] = -1;
         }
     }
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
+     *
+     * @returns {boolean}
+     */
+    async breakScroll(id) {
+        if (this.driverScrollState[id] === undefined) {
+            return false;
+        }
+
+        this.driverScrollState[id] = -1;
+        return true;
+    }
+
+    /**
+     *
+     * @param {number} id
      */
     async maximizeBrowser(id) {
         try {
@@ -306,7 +347,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {{x: number, y: number, width: number, height: number}} rect
      *
      * @returns {Promise<boolean>}
@@ -329,7 +370,29 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
+     * @param {number} zoom zoom level; 1 = 100%, 1.5 = 150%
+     *
+     * @returns {Promise<boolean>}
+     */
+    async setBrowserZoom(id, zoom) {
+        try {
+            let driver = await this.getWebDriver(id);
+            if (!driver) {
+                return false;
+            }
+
+            await driver.executeScript(`document.body.style.zoom = '${zoom}'`);
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param {number} id
      * @param {By} byLocator
      */
     async clickRandomElement(id, byLocator) {
@@ -345,8 +408,8 @@ class Controller {
             }
 
             await driver.actions({
-                    bridge: true
-                })
+                bridge: true
+            })
                 .move({
                     duration: 50,
                     origin: el,
@@ -365,7 +428,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {By} byLocator
      * @param {number} index
      * @param {{offset: {x: number, y: number}, justClick: boolean}} option
@@ -396,8 +459,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                        bridge: true
-                    })
+                    bridge: true
+                })
                     .move({
                         duration: 50,
                         origin: el,
@@ -417,7 +480,7 @@ class Controller {
 
     /**
      * Scroll google image 結果中右邊的詳細內框
-     * @param {number|string} id
+     * @param {number} id
      * @param {number} offset scroll pixel
      *
      * @returns {Promise<boolean>}
@@ -428,7 +491,7 @@ class Controller {
 
     /**
      * Scroll google image 結果中右邊的詳細內框
-     * @param {number|string} id
+     * @param {number} id
      * @param {number} offset scroll pixel
      *
      * @returns {Promise<boolean>}
@@ -444,7 +507,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      *
      * @returns {Promise<boolean>}
      */
@@ -455,7 +518,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {number} index
      *
      * @returns {Promise<boolean>}
@@ -467,7 +530,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      *
      * @returns {Promise<string>}
      */
@@ -478,7 +541,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {number} index
      *
      * @returns {Promise<string>}
@@ -490,7 +553,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      *
      * @returns {Promise<string>}
      */
@@ -501,7 +564,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {number} index
      *
      * @returns {Promise<string>}
@@ -513,7 +576,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {By} byLocator
      * @param {number} index if index < 0 or undefined, it will get the random link
      *
@@ -557,7 +620,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      * @param {By} byLocator
      * @param {number} index default is 0
      *
@@ -580,7 +643,7 @@ class Controller {
 
     /**
      *
-     * @param {number|string} id
+     * @param {number} id
      *
      * @returns {Promise<boolean>}
      */
