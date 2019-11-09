@@ -136,12 +136,14 @@ class Controller {
             let options = new Options();
             // chrome options
             var args = ["--proxy-server='direct://'",
-                "--proxy-bypass-list=*"
+                "--proxy-bypass-list=*",
+                '--disable-notifications',
             ];
             if (useLocalProfile) {
                 args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
             }
             options.addArguments(args);
+            options.excludeSwitches(['enable-automation']);
 
             // firefox options
             // options.setPreference("dom.webnotifications.enabled", false);
