@@ -112,8 +112,6 @@ let task = {
       await controller.clickElement(1, By.xpath('/html/body/div[7]/div/section/div/section/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div/div/a'), 0);
       //lauch new window
       await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
-      controller.SCROLL_GAP = 100;
-      controller.SCROLL_INTERVAL = 50;
       let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
       await controller.goTo(2, url_elephant_w);
       //lauch new window
