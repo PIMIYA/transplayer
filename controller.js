@@ -36,6 +36,7 @@ class Controller {
 
     XPATH_GOOGLE_SEARCH_RESULT_URL = "//div[contains(@class, 'srg')]//div[@class='g']/div/div[@class='rc']/div[@class='r']/a[1]";
     XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL = `//div[@id="search"]//div[@id="rso"]/div/div[@class="g"]/div/div/h3/a`;
+    XPATH_GOOGLE_VIDEO_SEARCH_RESULT_URL = `//div[@id="search"]//div[@class="srg"]/div[@class="g"]/div/div/div/a`;
 
     constructor() {
         /** @type {Object.<number, WebDriver>} */
@@ -573,6 +574,18 @@ class Controller {
      */
     async getGoogleNewsSearchResultUrl(id, index) {
         const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
+        return await this.getLinkUrl(id, by, index);
+    }
+
+    /**
+     *
+     * @param {number} id
+     * @param {number} index
+     *
+     * @returns {Promise<string>}
+     */
+    async getGoogleVideoSearchResultUrl(id, index) {
+        const by = By.xpath(this.XPATH_GOOGLE_VIDEO_SEARCH_RESULT_URL);
         return await this.getLinkUrl(id, by, index);
     }
 
