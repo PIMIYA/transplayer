@@ -122,16 +122,23 @@ class Controller {
                 console.error("Get a null driver");
                 return null;
             }
-            //let options = new Options();
+            let options = new Options();
+            //options.setProxy(null);
+            options.addArguments(["--proxy-server='direct://'",
+                "--proxy-bypass-list=*",
+                `--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`,
+                // `--profile-directory=SE_${id}`
+            ]);
             //options.setPreference("dom.webnotifications.enabled", false);
             //options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
             //options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
             this.webDrivers[id] = await new Builder()
                 .forBrowser('chrome')
                 .setChromeService(serviceBuilder)
-                //.forBrowser('firefox')
-                //.setFirefoxService(serviceBuilder)
-                //.setFirefoxOptions(options)
+                .setChromeOptions(options)
+                // .forBrowser('firefox')
+                // .setFirefoxService(serviceBuilder)
+                // .setFirefoxOptions(options)
                 .build();
 
             await this.webDrivers[id].manage().setTimeouts({
