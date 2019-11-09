@@ -37,6 +37,9 @@ class Controller {
     constructor() {
         /** @type {Object.<number, WebDriver>} */
         this.webDrivers = {};
+
+        /** @type {Object.<number, number>} */
+        this.driverScrollState = {};
     }
 
     async getPageHeight(id) {
@@ -256,6 +259,7 @@ class Controller {
         }
     }
 
+    _scrollState = 0;
     /**
      *
      * @param {number} id
@@ -268,8 +272,15 @@ class Controller {
                 return;
             }
 
+            this.driverScrollState[id] = 0;
             let gap = Math.floor(pixelHeight / this.SCROLL_GAP);
             for (let i = 0; i < gap; i++) {
+                console.log(this.driverScrollState[id]);
+                if (this.driverScrollState[id] == -1) {
+                    console.log('scroll to is break');
+                    return;
+                }
+
                 await driver.executeScript(`window.scrollBy(0, ${this.SCROLL_GAP})`);
                 await sleep(this.SCROLL_INTERVAL)
             }
@@ -277,7 +288,24 @@ class Controller {
         } catch (error) {
             console.error(error);
             return false;
+        } finally {
+            this.driverScrollState[id] = -1;
         }
+    }
+
+    /**
+     *
+     * @param {number} id
+     *
+     * @returns {boolean}
+     */
+    async breakScroll(id) {
+        if (this.driverScrollState[id] === undefined) {
+            return false;
+        }
+
+        this.driverScrollState[id] = -1;
+        return true;
     }
 
     /**
@@ -331,7 +359,6 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async setBrowserZoom(id, zoom) {
-        console.log(rect);
         try {
             let driver = await this.getWebDriver(id);
             if (!driver) {
