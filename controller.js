@@ -8,16 +8,19 @@ const {
 } = require('selenium-webdriver');
 const path = require('path');
 
+/** chrome */
 const {
     ServiceBuilder,
     Options
 } = require('selenium-webdriver/chrome');
 const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
+
+/** firefox */
 // const {
 //     ServiceBuilder,
 //     Options
 // } = require('selenium-webdriver/firefox');
-//const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
+// const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
 
 const serviceBuilder = new ServiceBuilder(driverPath);
 
@@ -40,6 +43,9 @@ class Controller {
 
         /** @type {Object.<number, number>} */
         this.driverScrollState = {};
+
+        /** @type {boolean} default is true */
+        this.useLocalProfile = true;
     }
 
     async getPageHeight(id) {
@@ -106,7 +112,7 @@ class Controller {
     /**
      *
      * @param {number} id
-     * @param {boolean} createIfNotExists
+     * @param {boolean} createIfNotExists default is `true`
      *
      * @returns {Promise<WebDriver|null>}
      */
@@ -116,21 +122,32 @@ class Controller {
         createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
             true :
             false;
+
+        let useLocalProfile = (this.useLocalProfile === undefined | this.useLocalProfile) ?
+            true :
+            false;
+
         if (!this.webDrivers[id]) {
             if (!createIfNotExists) {
                 console.error("Get a null driver");
                 return null;
             }
+
             let options = new Options();
-            //options.setProxy(null);
-            options.addArguments(["--proxy-server='direct://'",
-                "--proxy-bypass-list=*",
-                `--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`,
-                // `--profile-directory=SE_${id}`
-            ]);
-            //options.setPreference("dom.webnotifications.enabled", false);
-            //options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
-            //options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
+            // chrome options
+            var args = ["--proxy-server='direct://'",
+                "--proxy-bypass-list=*"
+            ];
+            if (useLocalProfile) {
+                args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
+            }
+            options.addArguments(args);
+
+            // firefox options
+            // options.setPreference("dom.webnotifications.enabled", false);
+            // options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
+            // options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
+
             this.webDrivers[id] = await new Builder()
                 .forBrowser('chrome')
                 .setChromeService(serviceBuilder)
