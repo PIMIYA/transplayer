@@ -100,7 +100,7 @@ let task = {
       await controller.openBrowser(1);
       controller.goTo(1, 'https://www.straitstimes.com/global');
       controller.SCROLL_GAP = 50;
-      controller.SCROLL_INTERVAL = 300;
+      controller.SCROLL_INTERVAL = 10;
       await controller.goTo(1, 'https://www.straitstimes.com/singapore');
       await controller.scrollTo(0, 7758);
       await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
@@ -197,7 +197,7 @@ let task = {
     action: async () => {
       await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
-      await controller.goTo(12, url_powder_r + '=3m0s&wide=1');
+      await controller.goTo(12, url_powder_r + '&t=3m0s&wide=1');
       await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       let url_powder_l = await controller.getLinkUrl(11, By.id('video-title'), 0);
       await controller.goTo(11, url_powder_l + '&wide=1');

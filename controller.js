@@ -98,8 +98,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-            bridge: true
-        })
+                bridge: true
+            })
             .move({
                 duration: 50,
                 origin: element,
@@ -139,6 +139,7 @@ class Controller {
             var args = ["--proxy-server='direct://'",
                 "--proxy-bypass-list=*",
                 '--disable-notifications',
+                '--app',
             ];
             if (useLocalProfile) {
                 args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
@@ -411,8 +412,8 @@ class Controller {
             }
 
             await driver.actions({
-                bridge: true
-            })
+                    bridge: true
+                })
                 .move({
                     duration: 50,
                     origin: el,
@@ -462,8 +463,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                    bridge: true
-                })
+                        bridge: true
+                    })
                     .move({
                         duration: 50,
                         origin: el,
