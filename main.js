@@ -284,14 +284,6 @@ let task = {
   },
   600: {
     action: async () => {
-      await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
-      // await controller.setBrowserRect(11, {
-      //   x: 300,
-      //   y: 300,
-      //   width: 1024,
-      //   height: 768
-      // });
-      await controller.clickElement(11, By.id('video-title'), 0);
       await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       // await controller.setBrowserRect(12, {
       //   x: 1080,
@@ -300,15 +292,26 @@ let task = {
       //   height: 768
       // });
       await controller.clickElement(12, By.id('video-title'), 0);
+
+      await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
+      // await controller.setBrowserRect(11, {
+      //   x: 300,
+      //   y: 300,
+      //   width: 1024,
+      //   height: 768
+      // });
+      await controller.clickElement(11, By.id('video-title'), 0);
+
     }
   },
   775: {
     action: async () => {
-      await controller.closeBrowser(11);
-      await delay(3000);
-      await controller.closeBrowser(12);
-      await delay(5000);
       await controller.closeBrowser(4);
+      await delay(3000);
+      await controller.closeBrowser(11);
+      await delay(5000);
+      await controller.closeBrowser(12);
+
     }
   }
 };
