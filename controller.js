@@ -22,6 +22,8 @@ const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
 // } = require('selenium-webdriver/firefox');
 // const driverPath = path.join(__dirname, './bin/firefox/geckodriver.exe');
 
+const Utils = require('./utils');
+
 const serviceBuilder = new ServiceBuilder(driverPath);
 
 function sleep(ms) {
@@ -39,11 +41,8 @@ class Controller {
     XPATH_GOOGLE_VIDEO_SEARCH_RESULT_URL = `//div[@id="search"]//div[@class="srg"]/div[@class="g"]/div/div/div/a`;
 
     constructor() {
-        /** @type {Object.<number, WebDriver>} */
-        this.webDrivers = {};
-
-        /** @type {Object.<number, number>} */
-        this.driverScrollState = {};
+        /** @type {Object.<number, {driver: WebDriver|null, scrollState: number, pid: number}>} */
+        this.browsers = {};
 
         /** @type {boolean} default is true */
         this.useLocalProfile = true;
@@ -118,6 +117,17 @@ class Controller {
      * @returns {Promise<WebDriver|null>}
      */
     async getWebDriver(id, createIfNotExists) {
+        /**
+         * @return {{driver: WebDriver|null, scrollState: number, pid: number}}
+         */
+        function createOne() {
+            return {
+                driver: null,
+                scrollState: -1,
+                driverPid: 0
+            };
+        }
+
         const TIMEOUT = 1000 * 5;
 
         createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
@@ -128,11 +138,13 @@ class Controller {
             true :
             false;
 
-        if (!this.webDrivers[id]) {
+        if (!this.browsers[id]) {
             if (!createIfNotExists) {
                 console.error("Get a null driver");
                 return null;
             }
+
+            this.browsers[id] = createOne();
 
             let options = new Options();
             // chrome options
@@ -152,26 +164,34 @@ class Controller {
             // options.setPreference("dom.webnotifications.enabled", false);
             // options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
             // options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
-
-            this.webDrivers[id] = await new Builder()
-                .forBrowser('chrome')
+            let usedBrowser = 'chrome';
+            let lastBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
+            this.browsers[id].driver = await new Builder()
+                .forBrowser(usedBrowser)
                 .setChromeService(serviceBuilder)
                 .setChromeOptions(options)
                 // .forBrowser('firefox')
                 // .setFirefoxService(serviceBuilder)
                 // .setFirefoxOptions(options)
                 .build();
+            let newBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
 
-            await this.webDrivers[id].manage().setTimeouts({
+            let createdPid = newBrowserPids.filter(v => !lastBrowserPids.includes(v));
+            if (createdPid.length > 0) {
+                this.browsers[id].pid = createdPid[0];
+            }
+
+            await this.browsers[id].driver.manage().setTimeouts({
                 implicit: TIMEOUT
             });
         }
 
-        if (!this.webDrivers[id]) {
+        if (!this.browsers[id].driver) {
             console.error("Get a null driver");
         }
 
-        return this.webDrivers[id];
+        console.log(this.browsers[id]);
+        return this.browsers[id].driver;
     }
 
     /**
@@ -248,7 +268,7 @@ class Controller {
         try {
             let driver = await this.getWebDriver(id, false);
             if (driver) {
-                this.webDrivers[id] = null;
+                this.browsers[id] = null;
                 driver.close();
             }
 
@@ -294,11 +314,11 @@ class Controller {
                 return;
             }
 
-            this.driverScrollState[id] = 0;
+            this.browsers[id].scrollState = 0;
             let gap = Math.floor(pixelHeight / this.SCROLL_GAP);
             for (let i = 0; i < gap; i++) {
-                console.log(this.driverScrollState[id]);
-                if (this.driverScrollState[id] == -1) {
+                console.log(this.browsers[id].scrollState);
+                if (this.browsers[id].scrollState == -1) {
                     console.log('scroll to is break');
                     return;
                 }
@@ -311,7 +331,7 @@ class Controller {
             console.error(error);
             return false;
         } finally {
-            this.driverScrollState[id] = -1;
+            this.browsers[id].scrollState = -1;
         }
     }
 
@@ -322,11 +342,11 @@ class Controller {
      * @returns {boolean}
      */
     async breakScroll(id) {
-        if (this.driverScrollState[id] === undefined) {
+        if (this.browsers[id] === undefined) {
             return false;
         }
 
-        this.driverScrollState[id] = -1;
+        this.browsers[id].scrollState = -1;
         return true;
     }
 
@@ -672,6 +692,18 @@ class Controller {
 
         await driver.switchTo().defaultContent();
         return true;
+    }
+
+    /**
+     *
+     * @param {number} id
+     */
+    async focusBrowser(id) {
+        if (!this.browsers[id]) {
+            return;
+        }
+
+        Utils.focusWindow(this.browsers[id].pid);
     }
 }
 
