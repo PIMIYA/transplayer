@@ -743,6 +743,11 @@ node-gyp@^6.0.0:
     tar "^4.4.12"
     which "1"
 
+node-process-windows@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/node-process-windows/-/node-process-windows-0.0.2.tgz#de5152d39eca983979cb3c3966fcff656f266bc6"
+  integrity sha1-3lFS057KmDl5yzw5Zvz/ZW8ma8Y=
+
 "nopt@2 || 3":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"
