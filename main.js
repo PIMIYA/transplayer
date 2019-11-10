@@ -127,7 +127,6 @@ let task = {
   },
   60: {
     action: async () => {
-      await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
       controller.SCROLL_GAP = 1;
       controller.SCROLL_INTERVAL = 5;
       await controller.scrollTo(4, 3000);
@@ -137,7 +136,7 @@ let task = {
     action: async () => {
       await controller.openBrowser(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5');
-      controller.scrollTo(4, 3000);
+      controller.scrollTo(4, 1000);
       await controller.openBrowser(5);
       await controller.goTo(5, 'https://www.google.com/search?client=firefox-b-d&biw=1082&bih=884&tbm=vid&ei=ITnEXcGXHaSUmAXZmJCoBg&q=telecom+tower&oq=telecom+tower&gs_l=psy-ab.3..0i19k1l10.2108.5144.0.5281.13.11.0.2.2.0.64.569.11.11.0....0...1c.1.64.psy-ab..0.13.578...0j0i131k1j0i3k1j0i10k1j0i30k1j0i10i19k1.0.BJHO7TxPpVw');
       let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
@@ -169,7 +168,7 @@ let task = {
       await controller.goTo(7, url_el_violent_y + '&wide=1');
     }
   },
-  360: {
+  390: {
     action: async () => {
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNRQ-iRUKfes8t7OW9tPyCdLPSycWg%3A1572504312313&sa=1&ei=-IK6XfXgEpW7wAOB6Y6QBA&q=elephant+bone&oq=elephant+bone&gs_l=img.3..0j0i30l3j0i8i30l4j0i5i30l2.47591.56597..57257...3.0..0.63.761.16......0....1..gws-wiz-img.....10..0i24j35i362i39j35i39j0i19j0i10i19.s3pUpO-Qsnc&ved=0ahUKEwj1vMWH88XlAhWVHXAKHYG0A0IQ4dUDCAc&uact=5');
       await controller.scrollTo(4, 3000);
@@ -177,23 +176,23 @@ let task = {
       await controller.closeBrowser(7);
     }
   },
-  420: {
+  450: {
     action: async () => {
       await controller.goTo(4, 'https://www.google.com/search?q=History+and+Ethnography+Museum&sxsrf=ACYBGNQP5pBdzmb24hL-nwVLtFIrc2FYEQ:1572504658222&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjO972s9MXlAhW1yosBHWrLDWgQ_AUIEygC&biw=1440&bih=798');
-      await controller.scrollTo(4, 3000);
+      await controller.scrollTo(4, 1000);
       await controller.goTo(10, 'https://www.youtube.com/results?search_query=History+and+Ethnography+Museum+melaka&sp=CAM%253D');
       let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
       await controller.goTo(10, url_hae + '&wide=1');
     }
   },
-  480: {
+  530: {
     action: async () => {
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQTmrNFatqqcWpUKdaoqrKdNB1KGA%3A1572504950513&sa=1&ei=doW6XcTzHoSFr7wPt9etqAk&q=history+gunpowder&oq=history+gunpowder&gs_l=img.3..0i19.29455.31762..32066...0.0..0.49.349.8......0....1..gws-wiz-img.......0i7i30j0i8i7i30.9XnTVluR7ZQ&ved=0ahUKEwjEhu639cXlAhWEwosBHbdrC5UQ4dUDCAc&uact=5#imgrc=_');
-      await controller.scrollTo(4, 3000);
+      await controller.scrollTo(4, 1000);
       await controller.closeBrowser(10);
     }
   },
-  540: {
+  580: {
     action: async () => {
       await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
@@ -206,9 +205,9 @@ let task = {
   760: {
     action: async () => {
       await controller.closeBrowser(4);
-      await delay(10000);
+      await delay(15000);
       await controller.closeBrowser(11);
-      await delay(13000);
+      await delay(20000);
       await controller.closeBrowser(12);
     }
   },
@@ -243,6 +242,7 @@ let task = {
       await controller.closeBrowser(1);
       await controller.closeBrowser(3);
       await controller.closeBrowser(0);
+      await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
     }
   }
 };
