@@ -94,7 +94,7 @@ ipcMain.on('timecode', (event, arg) => {
 let task = {
   0: {
     action: async () => {
-      //set up two news pages
+      /* //set up two news pages
       await controller.openBrowser(0);
       controller.goTo(0, 'https://www.bbc.com/');
       await controller.openBrowser(1);
@@ -122,7 +122,7 @@ let task = {
       await controller.closeBrowser(2);
       await controller.closeBrowser(1);
       await controller.closeBrowser(3);
-      await controller.closeBrowser(0);
+      await controller.closeBrowser(0); */
     }
   },
   60: {
@@ -203,13 +203,46 @@ let task = {
       await controller.goTo(11, url_powder_l + '&wide=1');
     }
   },
-  775: {
+  760: {
     action: async () => {
       await controller.closeBrowser(4);
       await delay(10000);
       await controller.closeBrowser(11);
       await delay(13000);
       await controller.closeBrowser(12);
+    }
+  },
+  770: {
+    action: async () => {
+      //set up two news pages
+      await controller.openBrowser(0);
+      controller.goTo(0, 'https://www.bbc.com/');
+      await controller.openBrowser(1);
+      controller.goTo(1, 'https://www.straitstimes.com/global');
+      controller.SCROLL_GAP = 50;
+      controller.SCROLL_INTERVAL = 10;
+      await controller.goTo(1, 'https://www.straitstimes.com/singapore');
+      await controller.scrollTo(0, 7758);
+      await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
+      await controller.switchToFrame(0, By.id('smphtml5iframeplayer'));
+      await delay(500);
+      await controller.clickElement(0, By.id('mediaContainer'), 0);
+      await controller.switchToDefault(0);
+      //???
+      await controller.clickElement(1, By.xpath('/html/body/div[7]/div/section/div/section/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div/div/a'), 0);
+      //lauch new window
+      await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+      let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
+      await controller.goTo(2, url_elephant_w);
+      //lauch new window
+      await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+      let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 1);
+      await controller.goTo(3, url_elephant_a);
+      //wait and close all windows
+      await controller.closeBrowser(2);
+      await controller.closeBrowser(1);
+      await controller.closeBrowser(3);
+      await controller.closeBrowser(0);
     }
   }
 };
