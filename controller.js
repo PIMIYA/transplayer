@@ -68,7 +68,7 @@ class Controller {
         }
 
         if (!element) {
-            console.log('not element')
+            // console.log('not element')
             return;
         }
 
@@ -110,6 +110,17 @@ class Controller {
     }
 
     /**
+     * @return {{driver: WebDriver|null, scrollState: number, pid: number}}
+     */
+    static __createDefaultBrowser() {
+        return {
+            driver: null,
+            scrollState: -1,
+            driverPid: 0
+        };
+    }
+    isCreating = false;
+    /**
      *
      * @param {number} id
      * @param {boolean} createIfNotExists default is `true`
@@ -117,82 +128,81 @@ class Controller {
      * @returns {Promise<WebDriver|null>}
      */
     async getWebDriver(id, createIfNotExists) {
-        /**
-         * @return {{driver: WebDriver|null, scrollState: number, pid: number}}
-         */
-        function createOne() {
-            return {
-                driver: null,
-                scrollState: -1,
-                driverPid: 0
-            };
+        // 讓 getWebDriver 強制等待不能同時建立，避免抓到錯誤的 chrome pid
+        while (this.isCreating) {
+            await sleep(100);
         }
 
-        const TIMEOUT = 1000 * 5;
+        this.isCreating = true;
+        try {
+            const TIMEOUT = 1000 * 5;
 
-        createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
-            true :
-            false;
+            createIfNotExists = (createIfNotExists === undefined | createIfNotExists) ?
+                true :
+                false;
 
-        let useLocalProfile = (this.useLocalProfile === undefined | this.useLocalProfile) ?
-            true :
-            false;
+            let useLocalProfile = (this.useLocalProfile === undefined | this.useLocalProfile) ?
+                true :
+                false;
 
-        if (!this.browsers[id]) {
-            if (!createIfNotExists) {
+            if (!this.browsers[id]) {
+                if (!createIfNotExists) {
+                    console.error("Get a null driver");
+                    return null;
+                }
+
+                this.browsers[id] = Controller.__createDefaultBrowser();
+
+                let options = new Options();
+                // chrome options
+                var args = ["--proxy-server='direct://'",
+                    "--proxy-bypass-list=*",
+                    '--disable-notifications',
+                    '--disable-infobars',
+                    '--app=https://www.google.com',
+                ];
+                if (useLocalProfile) {
+                    args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
+                }
+                options.addArguments(args);
+                options.addExtensions('./uBlock-Origin_v1.23.0.crx');
+                options.excludeSwitches(['enable-automation']);
+
+                // firefox options
+                // options.setPreference("dom.webnotifications.enabled", false);
+                // options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
+                // options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
+                let usedBrowser = 'chrome';
+                let lastBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
+                this.browsers[id].driver = await new Builder()
+                    .forBrowser(usedBrowser)
+                    .setChromeService(serviceBuilder)
+                    .setChromeOptions(options)
+                    // .forBrowser('firefox')
+                    // .setFirefoxService(serviceBuilder)
+                    // .setFirefoxOptions(options)
+                    .build();
+                let newBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
+
+                let createdPid = newBrowserPids.filter(v => !lastBrowserPids.includes(v));
+                if (createdPid.length > 0) {
+                    this.browsers[id].pid = createdPid[0];
+                }
+
+                await this.browsers[id].driver.manage().setTimeouts({
+                    implicit: TIMEOUT
+                });
+            }
+
+            if (!this.browsers[id].driver) {
                 console.error("Get a null driver");
-                return null;
             }
 
-            this.browsers[id] = createOne();
-
-            let options = new Options();
-            // chrome options
-            var args = ["--proxy-server='direct://'",
-                "--proxy-bypass-list=*",
-                '--disable-notifications',
-                '--disable-infobars',
-                '--app=https://www.google.com',
-            ];
-            if (useLocalProfile) {
-                args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
-            }
-            options.addArguments(args);
-            options.addExtensions('./uBlock-Origin_v1.23.0.crx');
-            options.excludeSwitches(['enable-automation']);
-
-            // firefox options
-            // options.setPreference("dom.webnotifications.enabled", false);
-            // options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
-            // options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
-            let usedBrowser = 'chrome';
-            let lastBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
-            this.browsers[id].driver = await new Builder()
-                .forBrowser(usedBrowser)
-                .setChromeService(serviceBuilder)
-                .setChromeOptions(options)
-                // .forBrowser('firefox')
-                // .setFirefoxService(serviceBuilder)
-                // .setFirefoxOptions(options)
-                .build();
-            let newBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
-
-            let createdPid = newBrowserPids.filter(v => !lastBrowserPids.includes(v));
-            if (createdPid.length > 0) {
-                this.browsers[id].pid = createdPid[0];
-            }
-
-            await this.browsers[id].driver.manage().setTimeouts({
-                implicit: TIMEOUT
-            });
+            // console.log(this.browsers[id]);
+            return this.browsers[id].driver;
+        } finally {
+            this.isCreating = false;
         }
-
-        if (!this.browsers[id].driver) {
-            console.error("Get a null driver");
-        }
-
-        console.log(this.browsers[id]);
-        return this.browsers[id].driver;
     }
 
     /**
@@ -318,9 +328,9 @@ class Controller {
             this.browsers[id].scrollState = 0;
             let gap = Math.floor(pixelHeight / this.SCROLL_GAP);
             for (let i = 0; i < gap; i++) {
-                console.log(this.browsers[id].scrollState);
+                // console.log(this.browsers[id].scrollState);
                 if (this.browsers[id].scrollState == -1) {
-                    console.log('scroll to is break');
+                    // console.log('scroll to is break');
                     return;
                 }
 
@@ -379,7 +389,7 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async setBrowserRect(id, rect) {
-        console.log(rect);
+        // console.log(rect);
         try {
             let driver = await this.getWebDriver(id);
             if (!driver) {
@@ -479,7 +489,7 @@ class Controller {
             if (!el) {
                 return false;
             }
-            console.log(await el.getRect());
+            // console.log(await el.getRect());
 
             if (justClick) {
                 await el.click();
@@ -640,7 +650,7 @@ class Controller {
             return null;
         }
 
-        console.log(`link length: ${links.length}`);
+        // console.log(`link length: ${links.length}`);
         if (index === undefined | isNaN(index)) {
             index = -1;
         }
