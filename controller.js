@@ -158,7 +158,7 @@ class Controller {
                 args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
             }
             options.addArguments(args);
-            options.addExtensions('./uBlock-Origin_v1.23.0.crx');
+            //options.addExtensions('../uBlock-Origin_v1.23.0.crx');
             options.excludeSwitches(['enable-automation']);
 
             // firefox options
