@@ -36,7 +36,7 @@ const serviceBuilder = new ServiceBuilder(driverPath);
 function sleep(ms) {
     return new Promise(resolve => {
         setTimeout(resolve, ms)
-    })
+    });
 }
 
 class Controller {
@@ -318,9 +318,9 @@ class Controller {
                 return false;
             }
 
-            if (this.browsers[id].scrollState == 0) {
-                await this.breakScroll(id);
-            }
+            // if (this.browsers[id].scrollState == 0) {
+            //     await this.breakScroll(id);
+            // }
 
             await driver.get(url);
             return true;
@@ -371,16 +371,25 @@ class Controller {
      * @returns {boolean}
      */
     async breakScroll(id) {
+        const interval = 50;
         if (this.browsers[id] === undefined || this.browsers[id] == null) {
             return false;
         }
+        if(this.browsers[id].scrollState == -1) {
+            return true;
+        }
 
         this.browsers[id].scrollState = -2;
+        let waitTime = 0;
         while (true) {
             if (this.browsers[id].scrollState == -1) {
                 break;
             }
-            await sleep(500);
+            await sleep(interval);
+            waitTime += interval;
+            if (waitTime >= 1500) {
+                break;
+            }
         }
 
         return true;
@@ -737,15 +746,17 @@ class Controller {
     async focusBrowser(id) {
         if (!this.browsers[id]) {
             console.error(`failed to focus ${id}`);
-
             return;
         }
+        var keys = Object.keys(this.browsers);
+        keys.forEach(async key => {
+            await this.breakScroll(parseInt(key));
+        });
 
         await sleep(this.SCROLL_INTERVAL + 50);
         Utils.focusWindow(this.browsers[id].pid);
         await sleep(100);
         Utils.focusWindow(this.browsers[id].pid);
-
         await sleep(50);
     }
 }
