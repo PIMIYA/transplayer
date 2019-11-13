@@ -17,9 +17,13 @@ const delay = (interval) => {
 (async () => {
     console.log('start test');
 
-    await controller.openBrowser(0);
-    await delay(3000);
+    controller.goTo(0, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAggF')
+    controller.openBrowser(1)
+    controller.goTo(1, 'https://www.npmjs.com/package/winston')
+    await delay(10000);
     await controller.focusBrowser(0);
+    await delay(1000);
+    await controller.focusBrowser(1);
 
     // await controller.goTo(0, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAggF');
     // let url = await controller.getLinkUrl(0, By.id('video-title'), 0);
