@@ -7,6 +7,7 @@ const {
     WebElement
 } = require('selenium-webdriver');
 const path = require('path');
+const os = require('os');
 
 /** chrome */
 const {
@@ -153,9 +154,12 @@ class Controller {
                 '--disable-notifications',
                 '--disable-infobars',
                 '--app=https://www.google.com',
+                '--mute-audio',
             ];
             if (useLocalProfile) {
-                args.push(`--user-data-dir=C://Users/wayne/AppData/Local/Google/Chrome/User Data/SE_${id}`);
+                let home_dir = os.homedir();
+                let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${id}`);
+                args.push(`--user-data-dir=${full_path}`);
             }
             options.addArguments(args);
             //options.addExtensions('../uBlock-Origin_v1.23.0.crx');
