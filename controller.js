@@ -16,6 +16,12 @@ const {
 } = require('selenium-webdriver/chrome');
 const driverPath = path.join(__dirname, './bin/chrome/chromedriver.exe');
 
+const fs = require('fs');
+const encodeExt = file => {
+    const stream = fs.readFileSync(path.resolve(file));
+    return Buffer.from(stream).toString('base64');
+};
+
 /** firefox */
 // const {
 //     ServiceBuilder,
@@ -168,8 +174,11 @@ class Controller {
                     let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${id}`);
                     args.push(`--user-data-dir=${full_path}`);
                 }
+                var ext = path.join(__dirname, "./1.23.0_0.crx");
+                console.log(ext);
+
                 options.addArguments(args);
-                //options.addExtensions('../uBlock-Origin_v1.23.0.crx');
+                options.addExtensions(encodeExt(ext));
                 options.excludeSwitches(['enable-automation']);
 
                 // firefox options

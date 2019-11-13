@@ -1,7 +1,7 @@
 var exec = require("child_process").exec;
 var path = require("path");
 
-var windowsFocusManagementBinary = path.join(__dirname, "windows-console-app", "windows-console-app", "bin", "Release", "windows-console-app.exe");
+var windowsFocusManagementBinary = path.join(__dirname, "bin", "win-process-app.exe");
 
 var isWindows = process.platform === "win32";
 var noop = function () { };

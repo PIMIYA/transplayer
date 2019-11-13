@@ -1,6 +1,6 @@
 const process = require('process');
 const util = require('util');
-const processWindows = require("node-process-windows");
+const processWindows = require("./win-focus");
 
 const getProcesses = util.promisify(processWindows.getProcesses);
 
