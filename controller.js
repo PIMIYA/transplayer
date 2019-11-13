@@ -148,29 +148,29 @@ class Controller {
 
             if (!this.browsers[id]) {
                 if (!createIfNotExists) {
-                    console.error("Get a null driver");
+                    console.error(`1 Get a null driver ${id}`);
                     return null;
                 }
 
                 this.browsers[id] = Controller.__createDefaultBrowser();
 
-            let options = new Options();
-            // chrome options
-            var args = ["--proxy-server='direct://'",
-                "--proxy-bypass-list=*",
-                '--disable-notifications',
-                '--disable-infobars',
-                '--app=https://www.google.com',
-                '--mute-audio',
-            ];
-            if (useLocalProfile) {
-                let home_dir = os.homedir();
-                let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${id}`);
-                args.push(`--user-data-dir=${full_path}`);
-            }
-            options.addArguments(args);
-            //options.addExtensions('../uBlock-Origin_v1.23.0.crx');
-            options.excludeSwitches(['enable-automation']);
+                let options = new Options();
+                // chrome options
+                var args = ["--proxy-server='direct://'",
+                    "--proxy-bypass-list=*",
+                    '--disable-notifications',
+                    '--disable-infobars',
+                    '--app=https://www.google.com',
+                    '--mute-audio',
+                ];
+                if (useLocalProfile) {
+                    let home_dir = os.homedir();
+                    let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${id}`);
+                    args.push(`--user-data-dir=${full_path}`);
+                }
+                options.addArguments(args);
+                //options.addExtensions('../uBlock-Origin_v1.23.0.crx');
+                options.excludeSwitches(['enable-automation']);
 
                 // firefox options
                 // options.setPreference("dom.webnotifications.enabled", false);
@@ -198,8 +198,9 @@ class Controller {
                 });
             }
 
-            if (!this.browsers[id].driver) {
-                console.error("Get a null driver");
+            if (this.browsers[id].driver == undefined ||
+                this.browsers[id].driver == null) {
+                console.error(`2 Get a null driver ${id}`);
             }
 
             // console.log(this.browsers[id]);
@@ -308,6 +309,10 @@ class Controller {
                 return false;
             }
 
+            if (this.browsers[id].scrollState == 0) {
+                await this.breakScroll(id);
+            }
+
             await driver.get(url);
             return true;
         } catch (error) {
@@ -333,20 +338,20 @@ class Controller {
             let gap = Math.floor(pixelHeight / this.SCROLL_GAP);
             for (let i = 0; i < gap; i++) {
                 // console.log(this.browsers[id].scrollState);
-                if (this.browsers[id].scrollState == -1) {
+                if (this.browsers[id].scrollState != 0) {
                     // console.log('scroll to is break');
-                    return;
+                    break;
                 }
 
                 await driver.executeScript(`window.scrollBy(0, ${this.SCROLL_GAP})`);
-                await sleep(this.SCROLL_INTERVAL)
+                await sleep(this.SCROLL_INTERVAL);
             }
-            return true;
         } catch (error) {
             console.error(error);
             return false;
         } finally {
             this.browsers[id].scrollState = -1;
+            return true;
         }
     }
 
@@ -357,11 +362,18 @@ class Controller {
      * @returns {boolean}
      */
     async breakScroll(id) {
-        if (this.browsers[id] === undefined) {
+        if (this.browsers[id] === undefined || this.browsers[id] == null) {
             return false;
         }
 
-        this.browsers[id].scrollState = -1;
+        this.browsers[id].scrollState = -2;
+        while (true) {
+            if (this.browsers[id].scrollState == -1) {
+                break;
+            }
+            await sleep(500);
+        }
+
         return true;
     }
 
@@ -643,7 +655,7 @@ class Controller {
             return null;
         }
 
-        let driver = await this.getWebDriver(id, false)
+        let driver = await this.getWebDriver(id, true)
         if (driver == null) {
             return null;
         }
@@ -666,7 +678,7 @@ class Controller {
             index = Math.min(index, links.length - 1);
         }
 
-        console.log(`Get index: ${index}`);
+        // console.log(`Get index: ${index}`);
         return links[index];
     }
 
@@ -683,7 +695,7 @@ class Controller {
             return false;
         }
 
-        let driver = await this.getWebDriver(id, false)
+        let driver = await this.getWebDriver(id, true)
         if (driver == null) {
             return false;
         }
@@ -700,7 +712,7 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async switchToDefault(id) {
-        let driver = await this.getWebDriver(id, false)
+        let driver = await this.getWebDriver(id, true)
         if (driver == null) {
             return false;
         }
@@ -715,10 +727,17 @@ class Controller {
      */
     async focusBrowser(id) {
         if (!this.browsers[id]) {
+            console.error(`failed to focus ${id}`);
+
             return;
         }
 
+        await sleep(this.SCROLL_INTERVAL + 50);
         Utils.focusWindow(this.browsers[id].pid);
+        await sleep(100);
+        Utils.focusWindow(this.browsers[id].pid);
+
+        await sleep(50);
     }
 }
 

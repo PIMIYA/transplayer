@@ -103,15 +103,19 @@ let task = {
   },
   120: {
     action: async () => {
-      await controller.openBrowser(4);
+      // await controller.openBrowser(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5');
       controller.scrollTo(4, 5000);
+      await delay(2000);
+
       await controller.openBrowser(5);
+      await controller.goTo(5, 'https://www.google.com/search?client=firefox-b-d&biw=1082&bih=884&tbm=vid&ei=ITnEXcGXHaSUmAXZmJCoBg&q=telecom+tower&oq=telecom+tower&gs_l=psy-ab.3..0i19k1l10.2108.5144.0.5281.13.11.0.2.2.0.64.569.11.11.0....0...1c.1.64.psy-ab..0.13.578...0j0i131k1j0i3k1j0i10k1j0i30k1j0i10i19k1.0.BJHO7TxPpVw');
       await controller.breakScroll(4);
       await controller.focusBrowser(5);
-      await controller.goTo(5, 'https://www.google.com/search?client=firefox-b-d&biw=1082&bih=884&tbm=vid&ei=ITnEXcGXHaSUmAXZmJCoBg&q=telecom+tower&oq=telecom+tower&gs_l=psy-ab.3..0i19k1l10.2108.5144.0.5281.13.11.0.2.2.0.64.569.11.11.0....0...1c.1.64.psy-ab..0.13.578...0j0i131k1j0i3k1j0i10k1j0i30k1j0i10i19k1.0.BJHO7TxPpVw');
+
       let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
       await controller.goTo(5, url_tower + '&wide=1');
+
       controller.scrollTo(4, 5000);
     }
   },
@@ -120,32 +124,36 @@ let task = {
       await controller.goTo(4, 'https://www.google.com/search?q=pawang&sxsrf=ACYBGNSJ5y1GyTyDLeNGuObzD3qF48m3BQ:1572502741554&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiO8MWa7cXlAhUSyIsBHWepAsMQ_AUIEigB&biw=1440&bih=798#imgrc=_');
       controller.scrollTo(4, 5000);
       await controller.closeBrowser(5);
-      await controller.scrollTo(4, 5000);
+      // await controller.scrollTo(4, 5000);
     }
   },
   240: {
     action: async () => {
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNRTTuCKjScRQgUZ4o6dyeqyGTGiPQ%3A1572502440570&sa=1&ei=qHu6XeW0IsqXr7wPoqWP8A8&q=Elephant+in+Keddah+or+Corral+painting&oq=Elephant+in+Keddah+or+Corral+painting&gs_l=img.3...12020.14881..15049...0.0..0.71.466.9......0....1..gws-wiz-img.3cGEqTlU0qw&ved=0ahUKEwjlqIOL7MXlAhXKy4sBHaLSA_4Q4dUDCAc&uact=5')
-      controller.scrollTo(4, 5000);
+      controller.scrollTo(4, 20000);
     }
   },
   300: {
     action: async () => {
       await controller.goTo(4, 'https://www.google.com/search?q=elephant+violent&sxsrf=ACYBGNT0ATjLqewVNHwCw8SUMYSK9txqZw:1572503984349&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiaiJTr8cXlAhUUJqYKHXNaBiMQ_AUIEigB&cshid=1572504257743713&biw=1440&bih=798&dpr=2');
       controller.scrollTo(4, 5000);
+      await delay(1000);
+      
       await controller.openBrowser(6);
       await controller.breakScroll(4);
       await controller.focusBrowser(6);
       await controller.goTo(6, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAhAB');
       let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
       await controller.goTo(6, url_el_violent + '&wide=1');
+
+      // await controller.breakScroll(4);
       await controller.openBrowser(7);
-      await controller.breakScroll(4);
       await controller.focusBrowser(7);
       await controller.goTo(7, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D');
       let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
       await controller.goTo(7, url_el_violent_y + '&wide=1');
-      controller.scrollTo(4, 5000);
+
+      controller.scrollTo(4, 20000);
     }
   },
   390: {
@@ -158,14 +166,17 @@ let task = {
   },
   450: {
     action: async () => {
-      await controller.goTo(4, 'https://www.google.com/search?q=History+and+Ethnography+Museum&sxsrf=ACYBGNQP5pBdzmb24hL-nwVLtFIrc2FYEQ:1572504658222&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjO972s9MXlAhW1yosBHWrLDWgQ_AUIEygC&biw=1440&bih=798');
-      controller.scrollTo(4, 5000);
-      await controller.openBrowser(10);
       await controller.breakScroll(4);
+      await controller.goTo(4, 'https://www.google.com/search?q=History+and+Ethnography+Museum&sxsrf=ACYBGNQP5pBdzmb24hL-nwVLtFIrc2FYEQ:1572504658222&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjO972s9MXlAhW1yosBHWrLDWgQ_AUIEygC&biw=1440&bih=798');
+      // controller.scrollTo(4, 5000);
+      await controller.focusBrowser(4);
+
+      await controller.openBrowser(10);
       await controller.focusBrowser(10);
       await controller.goTo(10, 'https://www.youtube.com/results?search_query=History+and+Ethnography+Museum+melaka&sp=CAM%253D');
       let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
       await controller.goTo(10, url_hae + '&wide=1');
+
       controller.scrollTo(4, 5000);
     }
   },
@@ -178,18 +189,22 @@ let task = {
   },
   580: {
     action: async () => {
-      await controller.openBrowser(12);
       await controller.breakScroll(4);
+      await controller.focusBrowser(4);
+
+      await controller.openBrowser(12);
       await controller.focusBrowser(12);
       await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
       await controller.goTo(12, url_powder_r + '&t=3m0s&wide=1');
+
+      // await controller.breakScroll(4);
       await controller.openBrowser(11);
-      await controller.breakScroll(4);
       await controller.focusBrowser(11);
       await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       let url_powder_l = await controller.getLinkUrl(11, By.id('video-title'), 0);
       await controller.goTo(11, url_powder_l + '&wide=1');
+
       controller.scrollTo(4, 5000);
     }
   },
@@ -216,18 +231,15 @@ let task = {
       await controller.switchToFrame(0, By.id('smphtml5iframeplayer'));
       await delay(500);
       await controller.clickElement(0, By.id('mediaContainer'), 0);
-      //await controller.clickElement(0, By.id('audio'),0);
       await controller.switchToDefault(0);
       //lauch new window
       await controller.openBrowser(2);
-      await controller.breakScroll(4);
       await controller.focusBrowser(2);
       await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
       await controller.goTo(2, url_elephant_w);
       //lauch new window
       await controller.openBrowser(3);
-      await controller.breakScroll(4);
       await controller.focusBrowser(3);
       await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 1);
