@@ -129,6 +129,7 @@ let task = {
       await controller.goTo(4, 'https://www.google.com/search?q=pawang&sxsrf=ACYBGNSJ5y1GyTyDLeNGuObzD3qF48m3BQ:1572502741554&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiO8MWa7cXlAhUSyIsBHWepAsMQ_AUIEigB&biw=1440&bih=798#imgrc=_');
       controller.scrollTo(4, 1000);
       await controller.closeBrowser(5);
+      await controller.focusBrowser(4);
       // await controller.scrollTo(4, 5000);
     }
   },
@@ -173,6 +174,7 @@ let task = {
       controller.scrollTo(4, 1000);
       await controller.closeBrowser(6);
       await controller.closeBrowser(7);
+      await controller.focusBrowser(4);
     }
   },
   450: {
@@ -199,6 +201,7 @@ let task = {
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQTmrNFatqqcWpUKdaoqrKdNB1KGA%3A1572504950513&sa=1&ei=doW6XcTzHoSFr7wPt9etqAk&q=history+gunpowder&oq=history+gunpowder&gs_l=img.3..0i19.29455.31762..32066...0.0..0.49.349.8......0....1..gws-wiz-img.......0i7i30j0i8i7i30.9XnTVluR7ZQ&ved=0ahUKEwjEhu639cXlAhWEwosBHbdrC5UQ4dUDCAc&uact=5#imgrc=_');
       controller.scrollTo(4, 1000);
       await controller.closeBrowser(10);
+      await controller.focusBrowser(4);
     }
   },
   580: {
@@ -229,6 +232,7 @@ let task = {
       await controller.closeBrowser(11);
       await delay(1000);
       await controller.closeBrowser(12);
+      await controller.focusBrowser(4);
     }
   },
   770: {

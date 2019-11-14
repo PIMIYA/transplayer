@@ -195,7 +195,9 @@ class Controller {
                 }
                 var ext = path.join(__dirname, "./1.23.0_0.crx");
                 options.addArguments(args);
-                options.addExtensions(encodeExt(ext));
+                if (theId == 1) {
+                    options.addExtensions(encodeExt(ext));
+                }
                 options.excludeSwitches(['enable-automation']);
 
                 // firefox options
@@ -796,6 +798,9 @@ class Controller {
      */
     async focusBrowser(id) {
         let theId = id;
+        if (this.browsers[theId] == undefined || this.browsers[theId] == null) {
+            return;
+        }
         while (this.doingFocus) {
             await sleep(50);
         }
