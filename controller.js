@@ -70,6 +70,7 @@ class Controller {
      * @param {WebElement|By} element
      */
     async scrollAndClickElement(id, element) {
+        let theId = id;
         if (element.constructor.name !== 'WebElement') {
             element = await this.getWebElement(0, element);
         }
@@ -79,7 +80,7 @@ class Controller {
             return;
         }
 
-        let driver = await this.getWebDriver(id);
+        let driver = await this.getWebDriver(theId);
         if (!driver) {
             return;
         }
@@ -117,6 +118,21 @@ class Controller {
     }
 
     /**
+     * @returns {Promise<Array.<number>>}
+     */
+    async getAllDriverId() {
+        let result = [];
+        var keys = Object.keys(this.browsers);
+        keys.forEach(key => {
+            if (this.browsers[parseInt(key)]) {
+                result.push(this.browsers[parseInt(key)].pid);
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * @return {{driver: WebDriver|null, scrollState: number, pid: number}}
      */
     static __createDefaultBrowser() {
@@ -135,12 +151,15 @@ class Controller {
      * @returns {Promise<WebDriver|null>}
      */
     async getWebDriver(id, createIfNotExists) {
+        let theId = id;
         // 讓 getWebDriver 強制等待不能同時建立，避免抓到錯誤的 chrome pid
         while (this.isCreating) {
-            await sleep(100);
+            await sleep(50);
         }
-
         this.isCreating = true;
+        let lastBrowserPids = await this.getAllDriverId();
+        console.log(theId, lastBrowserPids);
+
         try {
             const TIMEOUT = 1000 * 5;
 
@@ -152,13 +171,13 @@ class Controller {
                 true :
                 false;
 
-            if (!this.browsers[id]) {
+            if (!this.browsers[theId]) {
                 if (!createIfNotExists) {
-                    console.error(`1 Get a null driver ${id}`);
+                    console.error(`1 Get a null driver ${theId}`);
                     return null;
                 }
 
-                this.browsers[id] = Controller.__createDefaultBrowser();
+                this.browsers[theId] = Controller.__createDefaultBrowser();
 
                 let options = new Options();
                 // chrome options
@@ -171,12 +190,10 @@ class Controller {
                 ];
                 if (useLocalProfile) {
                     let home_dir = os.homedir();
-                    let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${id}`);
+                    let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${theId}`);
                     args.push(`--user-data-dir=${full_path}`);
                 }
                 var ext = path.join(__dirname, "./1.23.0_0.crx");
-                console.log(ext);
-
                 options.addArguments(args);
                 options.addExtensions(encodeExt(ext));
                 options.excludeSwitches(['enable-automation']);
@@ -186,8 +203,7 @@ class Controller {
                 // options.addExtensions('./bin/firefox/ublock_origin-1.23.0-an+fx.xpi');
                 // options.setProfile('../../../wayne/AppData/Roaming/Mozilla/Firefox/Profiles/4njbibcw.SE');
                 let usedBrowser = 'chrome';
-                let lastBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
-                this.browsers[id].driver = await new Builder()
+                this.browsers[theId].driver = await new Builder()
                     .forBrowser(usedBrowser)
                     .setChromeService(serviceBuilder)
                     .setChromeOptions(options)
@@ -195,25 +211,27 @@ class Controller {
                     // .setFirefoxService(serviceBuilder)
                     // .setFirefoxOptions(options)
                     .build();
-                let newBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
 
-                let createdPid = newBrowserPids.filter(v => !lastBrowserPids.includes(v));
-                if (createdPid.length > 0) {
-                    this.browsers[id].pid = createdPid[0];
-                }
-
-                await this.browsers[id].driver.manage().setTimeouts({
+                await this.browsers[theId].driver.manage().setTimeouts({
                     implicit: TIMEOUT
                 });
+
+                let newBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
+                console.log('new', theId, newBrowserPids);
+                let createdPid = newBrowserPids.filter(v => !lastBrowserPids.includes(v));
+                if (createdPid.length > 0) {
+                    this.browsers[theId].pid = createdPid[0];
+                }
+                console.log(`${theId} => ${this.browsers[theId].pid}`);
             }
 
-            if (this.browsers[id].driver == undefined ||
-                this.browsers[id].driver == null) {
-                console.error(`2 Get a null driver ${id}`);
+            if (this.browsers[theId].driver == undefined ||
+                this.browsers[theId].driver == null) {
+                console.error(`2 Get a null driver ${theId}`);
             }
 
             // console.log(this.browsers[id]);
-            return this.browsers[id].driver;
+            return this.browsers[theId].driver;
         } finally {
             this.isCreating = false;
         }
@@ -227,8 +245,9 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async executeScript(id, script) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
@@ -250,12 +269,13 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getLinkUrl(id, by, index) {
+        let theId = id;
         try {
             if (by === undefined) {
                 by = By.tagName('a');
             }
 
-            let el = await this.getWebElement(id, by, index);
+            let el = await this.getWebElement(theId, by, index);
             if (!el) {
                 return;
             }
@@ -274,8 +294,9 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async openBrowser(id) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id, true);
+            let driver = await this.getWebDriver(theId, true);
             return !!driver;
         } catch (error) {
             console.error(error);
@@ -290,13 +311,22 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async closeBrowser(id) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id, false);
-            if (driver) {
-                this.browsers[id] = null;
-                driver.close();
+            console.log(`1 close ${id}`);
+
+            if (this.browsers[theId] == undefined || this.browsers[theId] == null) {
+                console.log(`2 close ${id}`);
+                return true;
             }
 
+            if (this.browsers[theId].driver) {
+                console.log(`3 close ${id}`);
+                this.browsers[theId].driver.close();
+                this.browsers[theId].driver = null;
+                this.browsers[theId] = null;
+            }
+            console.log(`4 close ${id}`);
             return true;
         } catch (error) {
             console.error(error);
@@ -312,8 +342,9 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async goTo(id, url) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
@@ -330,24 +361,24 @@ class Controller {
         }
     }
 
-    _scrollState = 0;
     /**
      *
      * @param {number} id
      * @param {number} pixelHeight
      */
     async scrollTo(id, pixelHeight) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return;
             }
 
-            this.browsers[id].scrollState = 0;
+            this.browsers[theId].scrollState = 0;
             let gap = Math.floor(pixelHeight / this.SCROLL_GAP);
             for (let i = 0; i < gap; i++) {
                 // console.log(this.browsers[id].scrollState);
-                if (this.browsers[id].scrollState != 0) {
+                if (this.browsers[theId].scrollState != 0) {
                     // console.log('scroll to is break');
                     break;
                 }
@@ -359,7 +390,7 @@ class Controller {
             console.error(error);
             return false;
         } finally {
-            this.browsers[id].scrollState = -1;
+            this.browsers[theId].scrollState = -1;
             return true;
         }
     }
@@ -371,18 +402,19 @@ class Controller {
      * @returns {boolean}
      */
     async breakScroll(id) {
+        let theId = id;
         const interval = 50;
-        if (this.browsers[id] === undefined || this.browsers[id] == null) {
+        if (this.browsers[theId] === undefined || this.browsers[theId] == null) {
             return false;
         }
-        if(this.browsers[id].scrollState == -1) {
+        if (this.browsers[theId].scrollState == -1) {
             return true;
         }
 
-        this.browsers[id].scrollState = -2;
+        this.browsers[theId].scrollState = -2;
         let waitTime = 0;
         while (true) {
-            if (this.browsers[id].scrollState == -1) {
+            if (this.browsers[theId].scrollState == -1) {
                 break;
             }
             await sleep(interval);
@@ -400,8 +432,9 @@ class Controller {
      * @param {number} id
      */
     async maximizeBrowser(id) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
@@ -423,9 +456,10 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async setBrowserRect(id, rect) {
+        let theId = id;
         // console.log(rect);
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
@@ -446,8 +480,9 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async setBrowserZoom(id, zoom) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
@@ -466,13 +501,14 @@ class Controller {
      * @param {By} byLocator
      */
     async clickRandomElement(id, byLocator) {
+        let theId = id;
         try {
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
 
-            let el = await this.getWebElement(id, byLocator);
+            let el = await this.getWebElement(theId, byLocator);
             if (!el) {
                 return false;
             }
@@ -504,6 +540,7 @@ class Controller {
      * @param {{offset: {x: number, y: number}, justClick: boolean}} option
      */
     async clickElement(id, byLocator, index = 0, option = {}) {
+        let theId = id;
         try {
             option = option || {};
             let offset = option.offset || {
@@ -514,12 +551,12 @@ class Controller {
             offset.y = offset.y !== undefined ? offset.y : 0;
             let justClick = option.justClick !== undefined ? option.justClick : false;
 
-            let driver = await this.getWebDriver(id);
+            let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
             }
 
-            let el = await this.getWebElement(id, byLocator, index);
+            let el = await this.getWebElement(theId, byLocator, index);
             if (!el) {
                 return false;
             }
@@ -556,7 +593,8 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async scrollGoogleImagePageSearchTo(id, offset) {
-        return await this.scrollTo(id, offset);
+        let theId = id;
+        return await this.scrollTo(theId, offset);
     }
 
     /**
@@ -567,12 +605,13 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async scrollGoogleImagePageIrcTo(id, offset) {
+        let theId = id;
         const script = `
         let el = document.getElementById('irc-ss');
         if(el) el.scroll(0, ${offset});
         `;
 
-        return await this.executeScript(id, script);
+        return await this.executeScript(theId, script);
     }
 
     /**
@@ -582,8 +621,9 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async clickRandomGoogleImageResult(id) {
+        let theId = id;
         const by = By.xpath("//div[@id='rg_s']//a/img");
-        return await this.clickRandomElement(id, by);
+        return await this.clickRandomElement(theId, by);
     }
 
     /**
@@ -594,8 +634,9 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async clickGoogleImageResult(id, index) {
+        let theId = id;
         const by = By.xpath("//div[@id='rg_s']//a/img");
-        return await this.clickElement(id, by, index);
+        return await this.clickElement(theId, by, index);
     }
 
     /**
@@ -605,8 +646,9 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getRandomGoogleSearchResultUrl(id) {
+        let theId = id;
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
-        return await this.getLinkUrl(id, by);
+        return await this.getLinkUrl(theId, by);
     }
 
     /**
@@ -617,8 +659,9 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getGoogleSearchResultUrl(id, index) {
+        let theId = id;
         const by = By.xpath(this.XPATH_GOOGLE_SEARCH_RESULT_URL);
-        return await this.getLinkUrl(id, by, index);
+        return await this.getLinkUrl(theId, by, index);
     }
 
     /**
@@ -628,8 +671,9 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getRandomGoogleNewsSearchResultUrl(id) {
+        let theId = id;
         const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
-        return await this.getLinkUrl(id, by);
+        return await this.getLinkUrl(theId, by);
     }
 
     /**
@@ -640,8 +684,9 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getGoogleNewsSearchResultUrl(id, index) {
+        let theId = id;
         const by = By.xpath(this.XPATH_GOOGLE_NEWS_SEARCH_RESULT_URL);
-        return await this.getLinkUrl(id, by, index);
+        return await this.getLinkUrl(theId, by, index);
     }
 
     /**
@@ -652,8 +697,9 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getGoogleVideoSearchResultUrl(id, index) {
+        let theId = id;
         const by = By.xpath(this.XPATH_GOOGLE_VIDEO_SEARCH_RESULT_URL);
-        return await this.getLinkUrl(id, by, index);
+        return await this.getLinkUrl(theId, by, index);
     }
 
     /**
@@ -669,11 +715,13 @@ class Controller {
             return Math.floor(Math.random() * Math.floor(max));
         }
 
+        let theId = id;
+
         if (!byLocator) {
             return null;
         }
 
-        let driver = await this.getWebDriver(id, true)
+        let driver = await this.getWebDriver(theId, true)
         if (driver == null) {
             return null;
         }
@@ -709,16 +757,17 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async switchToFrame(id, byLocator, index = 0) {
+        let theId = id;
         if (!byLocator) {
             return false;
         }
 
-        let driver = await this.getWebDriver(id, true)
+        let driver = await this.getWebDriver(theId, true)
         if (driver == null) {
             return false;
         }
 
-        let ele = await this.getWebElement(id, byLocator, index);
+        let ele = await this.getWebElement(theId, byLocator, index);
         await driver.switchTo().frame(ele);
         return true;
     }
@@ -730,7 +779,8 @@ class Controller {
      * @returns {Promise<boolean>}
      */
     async switchToDefault(id) {
-        let driver = await this.getWebDriver(id, true)
+        let theId = id;
+        let driver = await this.getWebDriver(theId, true)
         if (driver == null) {
             return false;
         }
@@ -739,32 +789,45 @@ class Controller {
         return true;
     }
 
+    doingFocus = false;
     /**
      *
      * @param {number} id
      */
     async focusBrowser(id) {
-        if (!this.browsers[id]) {
-            console.error(`failed to focus ${id}`);
-            return;
+        let theId = id;
+        while (this.doingFocus) {
+            await sleep(50);
         }
-        var keys = Object.keys(this.browsers);
-        keys.forEach(async key => {
-            await this.breakScroll(parseInt(key));
-        });
+        this.doingFocus = true;
+        console.log(`focus ${theId} ${this.browsers[theId].pid}.`);
+        try {
+            if (!this.browsers[theId]) {
+                console.error(`failed to focus ${theId}`);
+                return;
+            }
 
-        await sleep(this.SCROLL_INTERVAL + 50);
-        Utils.focusWindow(this.browsers[id].pid);
-        await sleep(100);
-        Utils.focusWindow(this.browsers[id].pid);
-        await sleep(50);
+            // var keys = Object.keys(this.browsers);
+            // keys.forEach(async key => {
+            //     await this.breakScroll(parseInt(key));
+            // });
+            if (this.browsers[theId].driver) {
+                await this.browsers[theId].driver.executeScript('window.focus();');
+            }
+
+            await sleep(this.SCROLL_INTERVAL + 50);
+            Utils.focusWindow(this.browsers[theId].pid);
+        } finally {
+            console.log(`focus ${theId} ${this.browsers[theId].pid} done.`);
+            this.doingFocus = false;
+        }
     }
 
     async closeAllBrowser() {
         var keys = Object.keys(this.browsers);
         keys.forEach(async key => {
             console.log(`close ${key}`);
-            
+
             await this.closeBrowser(parseInt(key));
         });
     }

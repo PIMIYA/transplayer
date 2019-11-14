@@ -4,7 +4,7 @@ var path = require("path");
 var windowsFocusManagementBinary = path.join(__dirname, "bin", "win-process-app.exe");
 
 var isWindows = process.platform === "win32";
-var noop = function () { };
+var noop = function () {};
 
 /**
  * Get list of processes that are currently running
@@ -79,8 +79,8 @@ function focusWindowByName(processName) {
             var normalizedProcessName = p.processName.toLowerCase();
             var normalizedWindowName = p.mainWindowTitle.toLowerCase();
 
-            return normalizedProcessName.indexOf(processName) >= 0
-                || normalizedWindowName.indexOf(processName) >= 0;
+            return normalizedProcessName.indexOf(processName) >= 0 ||
+                normalizedWindowName.indexOf(processName) >= 0;
         });
 
         if (potentialResults.length > 0) {
@@ -107,6 +107,7 @@ function executeProcess(arg, callback, mapper) {
         }
 
         var returnObject = JSON.parse(stdout);
+        // console.log(returnObject);
 
         if (returnObject.Error) {
             callback(returnObject.Error, null);

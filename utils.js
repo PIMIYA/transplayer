@@ -45,7 +45,7 @@ class Utils {
      * @param {number} pid
      */
     static focusWindow(pid) {
-        if (!pid) { return; }
+        // if (!pid) { return; }
         processWindows.focusWindow(pid);
     }
 }
