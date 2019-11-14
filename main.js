@@ -7,7 +7,6 @@ const Controller = require('./controller');
 const {
   By
 } = require('selenium-webdriver');
-// var robot = require("robotjs");
 const ex = require('child_process');
 
 let controller = new Controller();
@@ -21,8 +20,8 @@ const delay = (interval) => {
   });
 }
 
-function bangSix(){
-  ex.exec('node ./test.js');
+function bang(index){
+  ex.exec(`node ./bang.js ${index}`);
 }
 
 function createWindow() {
@@ -121,7 +120,7 @@ let task = {
       await controller.breakScroll(4);
       await controller.goTo(5, 'https://www.google.com/search?client=firefox-b-d&biw=1082&bih=884&tbm=vid&ei=ITnEXcGXHaSUmAXZmJCoBg&q=telecom+tower&oq=telecom+tower&gs_l=psy-ab.3..0i19k1l10.2108.5144.0.5281.13.11.0.2.2.0.64.569.11.11.0....0...1c.1.64.psy-ab..0.13.578...0j0i131k1j0i3k1j0i10k1j0i30k1j0i10i19k1.0.BJHO7TxPpVw');
       await controller.focusBrowser(5);
-
+      bang(6);
       let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
       controller.goTo(5, url_tower + '&wide=1');
       // await controller.focusBrowser(5);
@@ -159,9 +158,7 @@ let task = {
       //await controller.focusBrowser(6);
       await controller.goTo(6, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAhAB');
       await controller.focusBrowser(6);
-      // robot.moveMouse(55 + 40 * 5, 1905);
-      // robot.mouseClick();
-      bangSix();
+      bang(6);
       let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
       controller.goTo(6, url_el_violent + '&wide=1');
 
@@ -171,8 +168,7 @@ let task = {
       await controller.goTo(7, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D');
       //await controller.focusBrowser(7);
       await controller.focusBrowser(7);
-      // robot.moveMouse(55 + 40 * 6, 1905);
-      // robot.mouseClick();
+      bang(7);
       let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
       controller.goTo(7, url_el_violent_y + '&wide=1');
 
@@ -198,8 +194,8 @@ let task = {
       await controller.breakScroll(4);
       //await delay(1000);
       await controller.goTo(10, 'https://www.youtube.com/results?search_query=History+and+Ethnography+Museum+melaka&sp=CAM%253D');
-      //await controller.focusBrowser(10);
       await controller.focusBrowser(10);
+      bang(6);
       let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
       controller.goTo(10, url_hae + '&wide=1');
 
@@ -223,14 +219,15 @@ let task = {
       await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
       //await controller.focusBrowser(12);
       await controller.focusBrowser(12);
+      bang(6);
       let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
       controller.goTo(12, url_powder_r + '&t=3m0s&wide=1');
 
       // await controller.breakScroll(4);
       //await controller.openBrowser(11);
       await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
-      //await controller.focusBrowser(11);
       await controller.focusBrowser(11);
+      bang(7);
       let url_powder_l = await controller.getLinkUrl(11, By.id('video-title'), 0);
       controller.goTo(11, url_powder_l + '&wide=1');
 
@@ -267,6 +264,7 @@ let task = {
       //await controller.openBrowser(2);
       await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       await controller.focusBrowser(2);
+      bang(6);
       let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
       controller.goTo(2, url_elephant_w);
       //lauch new window
@@ -274,6 +272,7 @@ let task = {
       await delay(500);
       await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       await controller.focusBrowser(3);
+      bang(7);
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 1);
       controller.goTo(3, url_elephant_a);
       // await delay(500);
