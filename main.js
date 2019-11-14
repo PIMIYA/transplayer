@@ -7,6 +7,8 @@ const Controller = require('./controller');
 const {
   By
 } = require('selenium-webdriver');
+// var robot = require("robotjs");
+const ex = require('child_process');
 
 let controller = new Controller();
 let win
@@ -17,6 +19,10 @@ const delay = (interval) => {
   return new Promise((resolve) => {
     setTimeout(resolve, interval)
   });
+}
+
+function bangSix(){
+  ex.exec('node ./test.js');
 }
 
 function createWindow() {
@@ -153,6 +159,9 @@ let task = {
       //await controller.focusBrowser(6);
       await controller.goTo(6, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAhAB');
       await controller.focusBrowser(6);
+      // robot.moveMouse(55 + 40 * 5, 1905);
+      // robot.mouseClick();
+      bangSix();
       let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
       controller.goTo(6, url_el_violent + '&wide=1');
 
@@ -162,6 +171,8 @@ let task = {
       await controller.goTo(7, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D');
       //await controller.focusBrowser(7);
       await controller.focusBrowser(7);
+      // robot.moveMouse(55 + 40 * 6, 1905);
+      // robot.mouseClick();
       let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
       controller.goTo(7, url_el_violent_y + '&wide=1');
 
