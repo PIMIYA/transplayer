@@ -759,6 +759,15 @@ class Controller {
         Utils.focusWindow(this.browsers[id].pid);
         await sleep(50);
     }
+
+    async closeAllBrowser() {
+        var keys = Object.keys(this.browsers);
+        keys.forEach(async key => {
+            console.log(`close ${key}`);
+            
+            await this.closeBrowser(parseInt(key));
+        });
+    }
 }
 
 /** TODO:

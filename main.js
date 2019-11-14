@@ -43,10 +43,11 @@ function createWindow() {
   //win.webContents.openDevTools()
 
   // Emitted when the window is closed.
-  win.on('closed', () => {
+  win.on('closed', async () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+    await controller.closeAllBrowser();
     win = null
   })
 }
