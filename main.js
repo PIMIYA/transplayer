@@ -101,14 +101,14 @@ let task = {
     action: async () => {
       await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       // await controller.focusBrowser(2);
-      bang(6);
+      //bang(6);
       let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
       controller.goTo(2, url_elephant_w);
       //lauch new window
       await delay(1000);
       await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       // await controller.focusBrowser(3);
-      bang(7);
+      //bang(7);
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
       controller.goTo(3, url_elephant_a);
     }
