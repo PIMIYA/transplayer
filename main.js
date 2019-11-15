@@ -97,12 +97,30 @@ ipcMain.on('timecode', (event, arg) => {
 });
 
 let task = {
+  20: {
+    action: async () => {
+      await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+      // await controller.focusBrowser(2);
+      bang(6);
+      let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
+      controller.goTo(2, url_elephant_w);
+      //lauch new window
+      await delay(1000);
+      await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+      // await controller.focusBrowser(3);
+      bang(7);
+      let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
+      controller.goTo(3, url_elephant_a);
+    }
+  },
   60: {
     action: async () => {
+      await controller.closeBrowser(3);
       await controller.closeBrowser(2);
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
       //await controller.focusBrowser(4);
+      await delay(3000);
       bang(5);
       controller.SCROLL_GAP = 1;
       controller.SCROLL_INTERVAL = 10;
@@ -265,22 +283,6 @@ let task = {
       await controller.switchToDefault(0);
       //lauch new window
       //await controller.openBrowser(2);
-      await delay(3000)
-      await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
-      // await controller.focusBrowser(2);
-      bang(6);
-      let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
-      controller.goTo(2, url_elephant_w);
-      //lauch new window
-      //await controller.openBrowser(3);
-      await delay(500);
-      await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
-      // await controller.focusBrowser(3);
-      bang(7);
-      let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
-      controller.goTo(3, url_elephant_a);
-      await delay(8000);
-      await controller.closeBrowser(3);
     }
   }
 };
