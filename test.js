@@ -37,7 +37,18 @@ var robot = require("robotjs");
 // robot.moveMouse(55 + 40 * 5, 1905);
 // robot.mouseClick();
 
-while (true) {
-    console.log(robot.getMousePos());
-    delay(500);
+// while (true) {
+//     console.log(robot.getMousePos());
+//     delay(500);
+// 
+
+const ex = require('child_process');
+
+
+function bang(index) {
+    ex.exec(`node ./bang.js ${index}`);
 }
+
+
+
+bang(5)
