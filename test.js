@@ -34,5 +34,10 @@ const delay = (interval) => {
 
 var robot = require("robotjs");
 
-robot.moveMouse(55 + 40 * 5, 1905);
-robot.mouseClick();
+// robot.moveMouse(55 + 40 * 5, 1905);
+// robot.mouseClick();
+
+while (true) {
+    console.log(robot.getMousePos());
+    delay(500);
+}

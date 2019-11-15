@@ -195,7 +195,7 @@ class Controller {
                 }
                 var ext = path.join(__dirname, "./1.23.0_0.crx");
                 options.addArguments(args);
-                if (theId == 1) {
+                if (theId != 4) {
                     options.addExtensions(encodeExt(ext));
                 }
                 options.excludeSwitches(['enable-automation']);

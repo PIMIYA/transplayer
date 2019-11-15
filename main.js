@@ -20,7 +20,7 @@ const delay = (interval) => {
   });
 }
 
-function bang(index){
+function bang(index) {
   ex.exec(`node ./bang.js ${index}`);
 }
 
@@ -104,16 +104,17 @@ let task = {
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
       await controller.focusBrowser(4);
+      bang(5);
       controller.SCROLL_GAP = 1;
       controller.SCROLL_INTERVAL = 10;
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
     }
   },
   120: {
     action: async () => {
       // await controller.openBrowser(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5');
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
       await delay(2000);
 
       //await controller.openBrowser(5);
@@ -125,14 +126,14 @@ let task = {
       controller.goTo(5, url_tower + '&wide=1');
       // await controller.focusBrowser(5);
 
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
     }
   },
   230: {
     action: async () => {
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?q=pawang&sxsrf=ACYBGNSJ5y1GyTyDLeNGuObzD3qF48m3BQ:1572502741554&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiO8MWa7cXlAhUSyIsBHWepAsMQ_AUIEigB&biw=1440&bih=798#imgrc=_');
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
       await controller.closeBrowser(5);
       await controller.focusBrowser(4);
       // await controller.scrollTo(4, 5000);
@@ -142,14 +143,14 @@ let task = {
     action: async () => {
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNRTTuCKjScRQgUZ4o6dyeqyGTGiPQ%3A1572502440570&sa=1&ei=qHu6XeW0IsqXr7wPoqWP8A8&q=Elephant+in+Keddah+or+Corral+painting&oq=Elephant+in+Keddah+or+Corral+painting&gs_l=img.3...12020.14881..15049...0.0..0.71.466.9......0....1..gws-wiz-img.3cGEqTlU0qw&ved=0ahUKEwjlqIOL7MXlAhXKy4sBHaLSA_4Q4dUDCAc&uact=5')
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
     }
   },
   320: {
     action: async () => {
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?q=elephant+violent&sxsrf=ACYBGNT0ATjLqewVNHwCw8SUMYSK9txqZw:1572503984349&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiaiJTr8cXlAhUUJqYKHXNaBiMQ_AUIEigB&cshid=1572504257743713&biw=1440&bih=798&dpr=2');
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
       await delay(20000);
 
       //await controller.openBrowser(6);
@@ -172,23 +173,26 @@ let task = {
       let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
       controller.goTo(7, url_el_violent_y + '&wide=1');
 
-      controller.scrollTo(4, 1000);
+      // controller.scrollTo(4, 7000);
+      // bang(6);
+      // bang(7);
     }
   },
   400: {
     action: async () => {
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNRQ-iRUKfes8t7OW9tPyCdLPSycWg%3A1572504312313&sa=1&ei=-IK6XfXgEpW7wAOB6Y6QBA&q=elephant+bone&oq=elephant+bone&gs_l=img.3..0j0i30l3j0i8i30l4j0i5i30l2.47591.56597..57257...3.0..0.63.761.16......0....1..gws-wiz-img.....10..0i24j35i362i39j35i39j0i19j0i10i19.s3pUpO-Qsnc&ved=0ahUKEwj1vMWH88XlAhWVHXAKHYG0A0IQ4dUDCAc&uact=5');
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 7000);
+      await delay(20000);
       await controller.closeBrowser(6);
       await controller.closeBrowser(7);
-      await controller.focusBrowser(4);
+      //await controller.focusBrowser(4);
     }
   },
   450: {
     action: async () => {
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?q=History+and+Ethnography+Museum&sxsrf=ACYBGNQP5pBdzmb24hL-nwVLtFIrc2FYEQ:1572504658222&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjO972s9MXlAhW1yosBHWrLDWgQ_AUIEygC&biw=1440&bih=798');
-      // controller.scrollTo(4, 5000);
+      controller.scrollTo(4, 3000);
 
       //await controller.openBrowser(10);
       await controller.breakScroll(4);
@@ -199,14 +203,14 @@ let task = {
       let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
       controller.goTo(10, url_hae + '&wide=1');
 
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
     }
   },
   530: {
     action: async () => {
       await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQTmrNFatqqcWpUKdaoqrKdNB1KGA%3A1572504950513&sa=1&ei=doW6XcTzHoSFr7wPt9etqAk&q=history+gunpowder&oq=history+gunpowder&gs_l=img.3..0i19.29455.31762..32066...0.0..0.49.349.8......0....1..gws-wiz-img.......0i7i30j0i8i7i30.9XnTVluR7ZQ&ved=0ahUKEwjEhu639cXlAhWEwosBHbdrC5UQ4dUDCAc&uact=5#imgrc=_');
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
       await controller.closeBrowser(10);
       await controller.focusBrowser(4);
     }
@@ -231,7 +235,7 @@ let task = {
       let url_powder_l = await controller.getLinkUrl(11, By.id('video-title'), 0);
       controller.goTo(11, url_powder_l + '&wide=1');
 
-      controller.scrollTo(4, 1000);
+      controller.scrollTo(4, 3000);
     }
   },
   778: {
