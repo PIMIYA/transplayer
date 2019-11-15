@@ -97,7 +97,7 @@ ipcMain.on('timecode', (event, arg) => {
 });
 
 let task = {
-  20: {
+  5: {
     action: async () => {
       await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
       // await controller.focusBrowser(2);
