@@ -10,7 +10,7 @@ try {
     let index = input - 1;
     robot.moveMouse(55 + 40 * index, 6);
     robot.mouseClick();
-    //robot.moveMouse(2380, 3);
+    robot.moveMouse(2380, 3);
 } catch (error) {
     console.error(error);
 }
