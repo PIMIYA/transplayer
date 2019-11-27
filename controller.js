@@ -105,8 +105,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-                bridge: true
-            })
+            bridge: true
+        })
             .move({
                 duration: 50,
                 origin: element,
@@ -516,8 +516,8 @@ class Controller {
             }
 
             await driver.actions({
-                    bridge: true
-                })
+                bridge: true
+            })
                 .move({
                     duration: 50,
                     origin: el,
@@ -568,8 +568,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                        bridge: true
-                    })
+                    bridge: true
+                })
                     .move({
                         duration: 50,
                         origin: el,
@@ -722,11 +722,14 @@ class Controller {
         if (!byLocator) {
             return null;
         }
-
-        let driver = await this.getWebDriver(theId, true)
-        if (driver == null) {
+        if (!this.browsers[theId]) {
             return null;
         }
+        if (!this.browsers[theId].driver) {
+            return null;
+        }
+
+        let driver = this.browsers[theId].driver;
 
         let links = await driver.findElements(byLocator);
         if (links.length === 0) {
@@ -805,7 +808,7 @@ class Controller {
             await sleep(50);
         }
         this.doingFocus = true;
-        console.log(`focus ${theId} ${this.browsers[theId].pid}.`);
+        // console.log(`focus ${theId} ${this.browsers[theId].pid}.`);
         try {
             if (!this.browsers[theId]) {
                 console.error(`failed to focus ${theId}`);
@@ -816,12 +819,16 @@ class Controller {
             // keys.forEach(async key => {
             //     await this.breakScroll(parseInt(key));
             // });
-            if (this.browsers[theId].driver) {
-                await this.browsers[theId].driver.executeScript('window.focus();');
-            }
+            // if (this.browsers[theId].driver) {
+            //     await this.browsers[theId].driver.executeScript('window.focus();');
+            // }
 
             await sleep(this.SCROLL_INTERVAL + 50);
             Utils.focusWindow(this.browsers[theId].pid);
+
+            // this.browsers[theId].driver.executeScript('alert();');
+            // await sleep(1);
+            // this.browsers[theId].driver.switchTo().alert().accept();
         } finally {
             console.log(`focus ${theId} ${this.browsers[theId].pid} done.`);
             this.doingFocus = false;
