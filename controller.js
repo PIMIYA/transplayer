@@ -105,8 +105,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-            bridge: true
-        })
+                bridge: true
+            })
             .move({
                 duration: 50,
                 origin: element,
@@ -516,8 +516,8 @@ class Controller {
             }
 
             await driver.actions({
-                bridge: true
-            })
+                    bridge: true
+                })
                 .move({
                     duration: 50,
                     origin: el,
@@ -568,8 +568,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                    bridge: true
-                })
+                        bridge: true
+                    })
                     .move({
                         duration: 50,
                         origin: el,

@@ -22,12 +22,12 @@
   },
   "homepage": "https://github.com/PIMIYA/transplayer",
   "devDependencies": {
-    "electron": "^6.1.2"
+    "electron": "^6.1.5"
   },
   "dependencies": {
     "node-gyp": "^6.0.0",
     "node-process-windows": "0.0.2",
-    "robotjs": "^0.5.1",
+    //"robotjs": "^0.5.1",
     "selenium-webdriver": "^4.0.0-alpha.5"
   }
 }
