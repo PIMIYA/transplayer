@@ -24,13 +24,25 @@ async function main() {
                 await controller.focusBrowser(2);
                 let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
                 controller.goTo(2, url_elephant_w);
-
-                await delay(1000);
+                // await controller.setBrowserRect(2, {
+                //   x: display_width * 0.6,
+                //   y: display_height * 0.2,
+                //   width: display_width * 0.4,
+                //   height: display_height * 0.5
+                // })
+                // await delay(500);
                 await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
                 await controller.focusBrowser(2);
                 await controller.focusBrowser(3);
                 let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
+                await delay(500);
                 controller.goTo(3, url_elephant_a);
+                // await controller.setBrowserRect(3, {
+                //   x: display_width * 0.2,
+                //   y: display_height * 0.7,
+                //   width: display_width * 0.4,
+                //   height: display_height * 0.5
+                // })
             }
         },
         65: {
@@ -39,6 +51,12 @@ async function main() {
                 await controller.closeBrowser(2);
                 await controller.breakScroll(4);
                 await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
+                await controller.setBrowserRect(4, {
+                    x: -7,
+                    y: 0,
+                    width: display_width + 14,
+                    height: display_height + 7
+                })
                 await controller.focusBrowser(4);
 
                 controller.SCROLL_GAP = 1;
@@ -166,10 +184,22 @@ async function main() {
             action: async () => {
                 await controller.closeBrowser(4);
 
-                await controller.goTo(0, 'https://www.bbc.com/');
                 if (page_flag == 0) {
                     page_flag = 1;
+                    await controller.goTo(0, 'https://www.bbc.com/');
                     await controller.goTo(1, 'https://www.straitstimes.com/singapore');
+                    await controller.setBrowserRect(0, {
+                        x: -50,
+                        y: 0,
+                        width: display_width / 2 + 100,
+                        height: display_height + 100
+                    })
+                    await controller.setBrowserRect(1, {
+                        x: display_width / 2,
+                        y: 0,
+                        width: display_width / 2,
+                        height: display_height
+                    })
                 }
 
                 //close bg later
