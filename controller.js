@@ -181,8 +181,7 @@ class Controller {
 
                 let options = new Options();
                 // chrome options
-                var args = ["--proxy-server='direct://'",
-                    "--proxy-bypass-list=*",
+                var args = [
                     '--disable-notifications',
                     '--disable-infobars',
                     '--app=https://www.google.com',

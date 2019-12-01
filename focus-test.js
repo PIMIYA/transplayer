@@ -1,4 +1,5 @@
 const Controller = require('./controller');
+
 const {
     By
 } = require('selenium-webdriver');
@@ -11,6 +12,7 @@ const delay = (interval) => {
 }
 
 let controller = new Controller();
+
 
 async function main() {
     let page_flag = 0;

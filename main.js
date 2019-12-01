@@ -2,16 +2,20 @@ const {
   app,
   BrowserWindow,
   ipcMain
-} = require('electron')
+} = require('electron');
 const Controller = require('./controller');
 const {
   By
 } = require('selenium-webdriver');
-const ex = require('child_process');
+// const ex = require('child_process');
+
+require('events').EventEmitter.prototype._maxListeners = 0;
 
 let controller = new Controller();
 let win
 let previousTime
+let display_width
+let display_height
 
 // delay
 const delay = (interval) => {
@@ -20,9 +24,9 @@ const delay = (interval) => {
   });
 }
 
-function bang(index) {
-  ex.exec(`node ./bang.js ${index}`);
-}
+// function bang(index) {
+//   ex.exec(`node ./bang.js ${index}`);
+// }
 
 function createWindow() {
   // Create the browser window.
@@ -39,7 +43,7 @@ function createWindow() {
   });
 
   //add mouse press through
-  win.setIgnoreMouseEvents(true)
+  win.setIgnoreMouseEvents(false)
 
   // and load the index.html of the app.
   win.loadFile('app/index.html')
@@ -60,7 +64,25 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+//app.on('ready', createWindow);
+app.on('ready', () => {
+  const electron = require('electron');
+  const allDisplay = electron.screen.getAllDisplays();
+  //console.log(allDisplay[0].bounds.width);
+  if (allDisplay.length == 1) {
+    console.log('1 display')
+    display_width = allDisplay[0].bounds.height * 2;
+    display_height = allDisplay[0].bounds.width;
+  }
+  if (allDisplay.length == 2) {
+    console.log('2 displays')
+    display_width = allDisplay[0].bounds.height + allDisplay[1].bounds.height;
+    display_height = allDisplay[0].bounds.width;
+  }
+  console.log('display_w:', display_width, 'display_h', display_height);
+
+  createWindow();
+})
 
 //enable hardware acceleration
 app.disableHardwareAcceleration();
@@ -96,36 +118,49 @@ ipcMain.on('timecode', (event, arg) => {
   }
 });
 
+
 let page_flag = 0;
 let pos_flag = 0;
 let task = {
-  10: {
+  5: {
     action: async () => {
       await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
-      await controller.focusBrowser(1);
+      // await controller.focusBrowser(1);
       await controller.focusBrowser(2);
       let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
       controller.goTo(2, url_elephant_w);
+      // await controller.setBrowserRect(2, {
+      //   x: display_width * 0.6,
+      //   y: display_height * 0.2,
+      //   width: display_width * 0.4,
+      //   height: display_height * 0.5
+      // })
       await delay(500);
       await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
-      await controller.focusBrowser(2);
+      // await controller.focusBrowser(2);
       await controller.focusBrowser(3);
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
       await delay(500);
       controller.goTo(3, url_elephant_a);
+      // await controller.setBrowserRect(3, {
+      //   x: display_width * 0.2,
+      //   y: display_height * 0.7,
+      //   width: display_width * 0.4,
+      //   height: display_height * 0.5
+      // })
     }
   },
   65: {
     action: async () => {
       await controller.closeBrowser(3);
       await controller.closeBrowser(2);
-      //await controller.breakScroll(4);
+      await controller.breakScroll(4);
       await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
       await controller.setBrowserRect(4, {
         x: 0,
         y: 0,
-        width: 2160,
-        height: 1920
+        width: display_width,
+        height: display_height
       })
       await controller.focusBrowser(4);
 
@@ -142,7 +177,7 @@ let task = {
 
       await controller.breakScroll(4);
       await controller.goTo(5, 'https://www.google.com/search?client=firefox-b-d&biw=1082&bih=884&tbm=vid&ei=ITnEXcGXHaSUmAXZmJCoBg&q=telecom+tower&oq=telecom+tower&gs_l=psy-ab.3..0i19k1l10.2108.5144.0.5281.13.11.0.2.2.0.64.569.11.11.0....0...1c.1.64.psy-ab..0.13.578...0j0i131k1j0i3k1j0i10k1j0i30k1j0i10i19k1.0.BJHO7TxPpVw');
-      await controller.focusBrowser(4);
+      // await controller.focusBrowser(4);
       await controller.focusBrowser(5);
 
       let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
@@ -175,14 +210,14 @@ let task = {
 
       await controller.breakScroll(4);
       await controller.goTo(6, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAhAB');
-      await controller.focusBrowser(4);
+      // await controller.focusBrowser(4);
       await controller.focusBrowser(6);
 
       let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
       controller.goTo(6, url_el_violent + '&wide=1');
 
       await controller.goTo(7, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D');
-      await controller.focusBrowser(6);
+      // await controller.focusBrowser(6);
       await controller.focusBrowser(7);
 
       let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
@@ -206,7 +241,7 @@ let task = {
 
       await controller.breakScroll(4);
       await controller.goTo(10, 'https://www.youtube.com/results?search_query=History+and+Ethnography+Museum+melaka&sp=CAM%253D');
-      await controller.focusBrowser(4);
+      // await controller.focusBrowser(4);
       await controller.focusBrowser(10);
 
       let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
@@ -227,7 +262,7 @@ let task = {
     action: async () => {
       await controller.breakScroll(4);
       await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
-      await controller.focusBrowser(4);
+      // await controller.focusBrowser(4);
       await controller.focusBrowser(12);
 
       let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
@@ -258,17 +293,17 @@ let task = {
       await controller.setBrowserRect(0, {
         x: 0,
         y: 0,
-        width: 1080,
-        height: 1920
+        width: display_width / 2,
+        height: display_height
       })
       if (page_flag == 0) {
         page_flag = 1;
         await controller.goTo(1, 'https://www.straitstimes.com/singapore');
         await controller.setBrowserRect(1, {
-          x: 1080,
+          x: display_width / 2,
           y: 0,
-          width: 1080,
-          height: 1920
+          width: display_width / 2,
+          height: display_height
         })
       }
 
