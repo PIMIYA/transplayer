@@ -7,7 +7,7 @@ const Controller = require('./controller');
 const {
   By
 } = require('selenium-webdriver');
-// const ex = require('child_process');
+const ex = require('child_process');
 
 require('events').EventEmitter.prototype._maxListeners = 0;
 
@@ -136,8 +136,8 @@ let task = {
       // })
       // await delay(500);
       await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
-      await controller.focusBrowser(2);
-      await controller.focusBrowser(3);
+      // await controller.focusBrowser(2);
+      // await controller.focusBrowser(3);
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
       await delay(500);
       controller.goTo(3, url_elephant_a);
