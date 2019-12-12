@@ -345,6 +345,10 @@ class Controller {
     async goTo(id, url) {
         let theId = id;
         try {
+            if (typeof url !== 'string') {
+                return false;
+            }
+
             let driver = await this.getWebDriver(theId);
             if (!driver) {
                 return false;
