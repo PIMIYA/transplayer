@@ -69,6 +69,36 @@ class Controller {
      * @param {number} id
      * @param {WebElement|By} element
      */
+    async scrollAndClickElementByXPath(id, xpath) {
+        const MaxTry = 5;
+
+        let staleElement = true;
+        let result;
+        let cnt = 0;
+
+        while (staleElement) {
+            cnt++;
+            if (cnt > MaxTry) {
+                break;
+            }
+
+            try {
+                let ele = By.xpath(xpath);
+                result = await this.scrollAndClickElement(id, ele);
+                staleElement = false;
+            } catch (e) {
+                staleElement = true
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param {number} id
+     * @param {WebElement|By} element
+     */
     async scrollAndClickElement(id, element) {
         let theId = id;
         if (element.constructor.name !== 'WebElement') {
@@ -105,8 +135,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-                bridge: true
-            })
+            bridge: true
+        })
             .move({
                 duration: 50,
                 origin: element,
@@ -185,7 +215,7 @@ class Controller {
                     '--disable-notifications',
                     '--disable-infobars',
                     '--app=https://www.google.com',
-                    '--mute-audio',
+                    '--mute-audio'
                 ];
                 if (useLocalProfile) {
                     let home_dir = os.homedir();
@@ -338,6 +368,34 @@ class Controller {
     /**
      *
      * @param {number} id
+     *
+     * @returns {Promise<boolean>}
+     */
+    async playYoutubeVideo(id) {
+        let theId = id;
+        try {
+            let driver = await this.getWebDriver(theId);
+            if (!driver) {
+                return false;
+            }
+
+            let ele = await driver.findElement(By.className('ytp-play-button'));
+            if (!ele) {
+                return false;
+            }
+            await ele.sendKeys('k');
+
+            return true;
+        } catch (error) {
+            console.error('GET ERROR:');
+            console.error(error);
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param {number} id
      * @param {string} url
      *
      * @returns {Promise<boolean>}
@@ -361,6 +419,7 @@ class Controller {
             await driver.get(url);
             return true;
         } catch (error) {
+            console.error('GET ERROR:');
             console.error(error);
             return false;
         }
@@ -519,8 +578,8 @@ class Controller {
             }
 
             await driver.actions({
-                    bridge: true
-                })
+                bridge: true
+            })
                 .move({
                     duration: 50,
                     origin: el,
@@ -571,8 +630,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                        bridge: true
-                    })
+                    bridge: true
+                })
                     .move({
                         duration: 50,
                         origin: el,
@@ -702,9 +761,33 @@ class Controller {
      * @returns {Promise<string>}
      */
     async getGoogleVideoSearchResultUrl(id, index) {
+        const MaxTry = 5;
+
         let theId = id;
-        const by = By.xpath(this.XPATH_GOOGLE_VIDEO_SEARCH_RESULT_URL);
-        return await this.getLinkUrl(theId, by, index);
+        let result;
+        let cnt = 0;
+
+        let by = By.xpath(this.XPATH_GOOGLE_VIDEO_SEARCH_RESULT_URL);
+        let staleElement = true;
+        while (staleElement) {
+            cnt++;
+            if (cnt > MaxTry) {
+                break;
+            }
+
+            try {
+                let ytUrl = await this.getLinkUrl(theId, by, index);
+                let urlObj = new URL(ytUrl);
+                let videoId = urlObj.searchParams.get('v');
+                result = `https://www.youtube.com/embed/${videoId}/?&autoplay=1&loop=1`
+
+                staleElement = false;
+            } catch (e) {
+                staleElement = true
+            }
+        }
+
+        return result;
     }
 
     /**

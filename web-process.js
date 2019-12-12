@@ -78,7 +78,9 @@ let task = {
             await controller.focusBrowser(5);
 
             let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
-            controller.goTo(5, url_tower + '&wide=1');
+            // controller.goTo(5, url_tower + '&wide=1&autoplay=1');
+            controller.goTo(5, url_tower);
+            controller.playYoutubeVideo(5);
 
             controller.scrollTo(4, 3000);
         }
@@ -235,7 +237,8 @@ let task = {
             //close bg later
             controller.SCROLL_GAP = 50;
             controller.SCROLL_INTERVAL = 50;
-            await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
+            // await controller.scrollAndClickElement(0, By.xpath('/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a'));
+            await controller.scrollAndClickElementByXPath(0, '/html/body/div[7]/div/section[9]/div/div/div[1]/div[2]/a');
             await controller.switchToFrame(0, By.id('smphtml5iframeplayer'));
             await delay(500);
             await controller.clickElement(0, By.id('mediaContainer'), 0);
