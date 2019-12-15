@@ -135,8 +135,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-            bridge: true
-        })
+                bridge: true
+            })
             .move({
                 duration: 50,
                 origin: element,
@@ -402,8 +402,9 @@ class Controller {
      */
     async goTo(id, url) {
         let theId = id;
+        let theUrl = url;
         try {
-            if (typeof url !== 'string') {
+            if (typeof theUrl !== 'string') {
                 return false;
             }
 
@@ -416,10 +417,10 @@ class Controller {
             //     await this.breakScroll(id);
             // }
 
-            await driver.get(url);
+            await driver.get(theUrl);
             return true;
         } catch (error) {
-            console.error('GET ERROR:');
+            console.error(`GET ERROR: ${theUrl}`);
             console.error(error);
             return false;
         }
@@ -578,8 +579,8 @@ class Controller {
             }
 
             await driver.actions({
-                bridge: true
-            })
+                    bridge: true
+                })
                 .move({
                     duration: 50,
                     origin: el,
@@ -630,8 +631,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                    bridge: true
-                })
+                        bridge: true
+                    })
                     .move({
                         duration: 50,
                         origin: el,
@@ -645,6 +646,22 @@ class Controller {
             return true;
         } catch (error) {
             console.error(error);
+            return false;
+        }
+    }
+
+    async refresh(id) {
+        let theId = id;
+        try {
+            let driver = await this.getWebDriver(theId);
+            if (!driver) {
+                return false;
+            }
+            console.log(`refresh ${theId}`);
+            await driver.navigate().refresh();
+
+            return true;
+        } catch (error) {
             return false;
         }
     }
