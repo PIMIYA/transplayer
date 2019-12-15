@@ -47,5 +47,8 @@ let currentTime = 770;
 
         await delay(1000);
         currentTime++;
+        if (currentTime >= 781) {
+            currentTime = 0;
+        }
     }
 })();

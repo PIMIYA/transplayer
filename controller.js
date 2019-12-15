@@ -917,22 +917,11 @@ class Controller {
                 console.error(`failed to focus ${theId}`);
                 return;
             }
-
-            // var keys = Object.keys(this.browsers);
-            // keys.forEach(async key => {
-            //     await this.breakScroll(parseInt(key));
-            // });
-            // if (this.browsers[theId].driver) {
-            //     await this.browsers[theId].driver.executeScript('window.focus();');
-            // }
-
-            await sleep(this.SCROLL_INTERVAL + 50);
             Utils.focusWindow(this.browsers[theId].pid);
-
-            // this.browsers[theId].driver.executeScript('alert();');
-            // await sleep(1);
-            // this.browsers[theId].driver.switchTo().alert().accept();
-        } finally {
+        } catch (e) {
+            console.error(e);
+        }
+        finally {
             console.log(`focus ${theId} ${this.browsers[theId].pid} done.`);
             this.doingFocus = false;
         }
