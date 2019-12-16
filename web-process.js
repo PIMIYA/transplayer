@@ -9,6 +9,7 @@ const delay = (interval) => {
         setTimeout(resolve, interval)
     });
 }
+require('events').EventEmitter.prototype._maxListeners = 0;
 
 let controller = new Controller();
 
@@ -78,7 +79,8 @@ let task = {
             await controller.focusBrowser(4);
             await controller.focusBrowser(5);
 
-            let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
+            //let url_tower = await controller.getGoogleVideoSearchResultUrl(5, 0);
+            let url_tower = 'https://www.youtube.com/watch?v=lPjzsGF5opY&wide=1';
             // controller.goTo(5, url_tower + '&wide=1&autoplay=1');
             await controller.goTo(5, url_tower);
             await controller.focusBrowser(5);
@@ -136,6 +138,7 @@ let task = {
             let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
             await controller.goTo(6, url_el_violent + '&wide=1');
             await controller.playYoutubeVideo(6);
+            await controller.focusBrowser(4);
             await controller.focusBrowser(6);
         }
     },
@@ -143,11 +146,13 @@ let task = {
         action: async () => {
             //switch to youtube search
             await controller.goTo(7, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D');
+            await controller.focusBrowser(6);
             await controller.focusBrowser(7);
 
             let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
             await controller.goTo(7, url_el_violent_y + '&wide=1');
             await controller.playYoutubeVideo(7);
+            await controller.focusBrowser(6);
             await controller.focusBrowser(7);
         }
     },
@@ -259,12 +264,6 @@ let task = {
                 await controller.switchToDefault(0);
             } catch (error) {}
         },
-        // 771: {
-        //     action: async () => {
-        //         await controller.clickElement(0, By.id('mediaContainer'), 0);
-        //         await controller.switchToDefault(0);
-        //     }
-        // }
     }
 };
 
