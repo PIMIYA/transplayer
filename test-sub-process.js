@@ -33,6 +33,8 @@ process.on("SIGINT", function () {
 
 let currentTime = 770;
 
+
+
 (async () => {
     while (true) {
         if (isCancelRequired) {
@@ -43,7 +45,9 @@ let currentTime = 770;
             break;
         }
 
-        webProcess.send({ currentTime: currentTime });
+        webProcess.send({
+            currentTime: currentTime
+        });
 
         await delay(1000);
         currentTime++;

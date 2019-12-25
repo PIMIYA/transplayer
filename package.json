@@ -32,6 +32,7 @@
   "dependencies": {
     "node-gyp": "^6.0.0",
     "node-process-windows": "0.0.2",
+    "osc-js": "^2.1.0",
     "selenium-webdriver": "^4.0.0-alpha.5"
   }
 }

@@ -1,46 +1,11 @@
 const {
   app,
   BrowserWindow,
-  ipcMain
 } = require('electron');
-const Controller = require('./controller');
-const {
-  By
-} = require('selenium-webdriver');
-const child_process = require('child_process');
 
 require('events').EventEmitter.prototype._maxListeners = 0;
 
-// add sub process
-let webProcess = child_process.fork('./web-process.js');
-let isCancelRequired = false;
-if (process.platform === "win32") {
-  var rl = require("readline").createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  rl.on("SIGINT", function () {
-    process.emit("SIGINT");
-  });
-}
-
-process.on("SIGINT", function () {
-  // graceful shutdown
-  isCancelRequired = true;
-  if (webProcess) {
-    webProcess.kill();
-  }
-  console.log('shutdown...');
-  process.exit();
-});
-
-
-
-
-let controller = new Controller();
 let win
-let previousTime
 let display_width
 let display_height
 
@@ -51,9 +16,6 @@ const delay = (interval) => {
   });
 }
 
-// function bang(index) {
-//   ex.exec(`node ./bang.js ${index}`);
-// }
 
 function createWindow() {
   // Create the browser window.
@@ -62,10 +24,12 @@ function createWindow() {
     height: 480,
     transparent: true,
     frame: false,
-    fullscreen: false,
+    fullscreen: true,
     alwaysOnTop: true,
+    skipTaskbar: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: false,
+      nodeIntegrationInWorker: false
     }
   });
 
@@ -83,7 +47,6 @@ function createWindow() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    await controller.closeAllBrowser();
     win = null
   })
 }
@@ -109,8 +72,6 @@ app.on('ready', () => {
   console.log('display_w:', display_width, 'display_h', display_height);
 
   createWindow();
-  const wp = require('./web-process');
-  wp.c
 
 })
 
@@ -132,26 +93,5 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
-  }
-});
-
-ipcMain.on('timecode', (event, arg) => {
-  // return;
-  currentTime = Math.trunc(arg)
-  if (currentTime != previousTime) {
-    previousTime = currentTime;
-    console.log('current time in sec: ', currentTime);
-    // if (!task[currentTime]) {
-    //   return;
-    // }
-    // task[currentTime].action();
-    if (!webProcess.send({
-        currentTime: currentTime
-      })) {
-      return;
-    }
-    webProcess.send({
-      currentTime: currentTime
-    });
   }
 });

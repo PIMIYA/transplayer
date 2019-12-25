@@ -9,6 +9,7 @@ const delay = (interval) => {
         setTimeout(resolve, interval)
     });
 }
+
 require('events').EventEmitter.prototype._maxListeners = 0;
 
 let controller = new Controller();
@@ -17,11 +18,12 @@ let display_width = 1920;
 let display_height = 1080;
 let page_flag = 0;
 
+
 let task = {
     10: {
         action: async () => {
-            await controller.focusBrowser(1);
             await controller.goTo(2, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+            await controller.focusBrowser(1);
             await controller.focusBrowser(2);
             let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
             await controller.goTo(2, url_elephant_w);
@@ -32,8 +34,9 @@ let task = {
             //   height: display_height * 0.5
             // })
             // await delay(500);
-            await controller.focusBrowser(2);
+
             await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
+            await controller.focusBrowser(2);
             await controller.focusBrowser(3);
             let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
             await delay(500);
@@ -50,9 +53,8 @@ let task = {
         action: async () => {
             await controller.closeBrowser(3);
             await controller.closeBrowser(2);
-            await controller.focusBrowser(1);
-            // await controller.breakScroll(4);
             await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_');
+            await controller.focusBrowser(1);
             await controller.focusBrowser(4);
             await controller.setBrowserRect(4, {
                 x: -7,
@@ -60,7 +62,7 @@ let task = {
                 width: display_width + 14,
                 height: display_height + 7
             })
-
+            await controller.focusBrowser(4);
             controller.SCROLL_GAP = 1;
             controller.SCROLL_INTERVAL = 10;
             controller.scrollTo(4, 3000);
@@ -69,7 +71,9 @@ let task = {
     120: {
         action: async () => {
             await controller.goTo(4, 'https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5');
+            await controller.focusBrowser(4);
             controller.scrollTo(4, 3000);
+
         }
     },
     122: {
@@ -83,11 +87,9 @@ let task = {
             let url_tower = 'https://www.youtube.com/watch?v=lPjzsGF5opY&wide=1';
             // controller.goTo(5, url_tower + '&wide=1&autoplay=1');
             await controller.goTo(5, url_tower);
-            await controller.focusBrowser(5);
             await controller.playYoutubeVideo(5);
 
             controller.scrollTo(4, 3000);
-            controller.focusBrowser(5);
         }
     },
     230: {
@@ -138,8 +140,6 @@ let task = {
             let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
             await controller.goTo(6, url_el_violent + '&wide=1');
             await controller.playYoutubeVideo(6);
-            await controller.focusBrowser(4);
-            await controller.focusBrowser(6);
         }
     },
     345: {
@@ -149,11 +149,9 @@ let task = {
             await controller.focusBrowser(6);
             await controller.focusBrowser(7);
 
-            let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 2);
+            let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 1);
             await controller.goTo(7, url_el_violent_y + '&wide=1');
             await controller.playYoutubeVideo(7);
-            await controller.focusBrowser(6);
-            await controller.focusBrowser(7);
         }
     },
     400: {
@@ -175,8 +173,8 @@ let task = {
             controller.scrollTo(4, 3000);
 
             await controller.breakScroll(4);
-            await controller.focusBrowser(4);
             await controller.goTo(10, 'https://www.youtube.com/results?search_query=History+and+Ethnography+Museum+melaka&sp=CAM%253D');
+            await controller.focusBrowser(4);
             await controller.focusBrowser(10);
 
             // let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
@@ -198,16 +196,16 @@ let task = {
     580: {
         action: async () => {
             await controller.breakScroll(4);
-            await controller.focusBrowser(4);
             await controller.goTo(12, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
+            await controller.focusBrowser(4);
             await controller.focusBrowser(12);
 
             let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
             await controller.goTo(12, url_powder_r + '&t=3m0s&wide=1');
             controller.playYoutubeVideo(12);
 
-            await controller.focusBrowser(12);
             await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
+            await controller.focusBrowser(12);
             await controller.focusBrowser(11);
 
             let url_powder_l = await controller.getLinkUrl(11, By.id('video-title'), 0);
@@ -279,10 +277,3 @@ process.on("message", function (args) {
     let currentTime = args["currentTime"];
     (async () => callTask(currentTime))();
 });
-
-(async () => {
-    console.log("web-process is running...");
-    while (true) {
-        await delay(1000);
-    }
-})();

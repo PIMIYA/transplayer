@@ -15,8 +15,27 @@
     <source src="../videos/1112.webm" type="video/webm" />
   </video>
 
-  <script src="index.js"></script>
+  <!-- <script src="index.js"></script> -->
+  <script src="../node_modules/osc-js/lib/osc.min.js"></script>
+  <script>
+    const videoElement = document.getElementById("vid");
+    var osc = new OSC();
+    osc.open({
+      host: 'localhost', // @param {string} Hostname of WebSocket server
+      port: 8080 // @param {number} Port of WebSocket server
+    }); // connect by default to ws://localhost:8080
 
+    videoElement.addEventListener("loadedmetadata", function () {
+      this.currentTime = 770;
+    }, false);
+
+    videoElement.addEventListener('timeupdate', (event) => {
+      var currentTime = videoElement.currentTime;
+      //console.log(currentTime);
+      var message = new OSC.Message('/test/random', currentTime);
+      osc.send(message);
+    });
+  </script>
 </body>
 
 </html>
