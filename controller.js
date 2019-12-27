@@ -135,8 +135,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-                bridge: true
-            })
+            bridge: true
+        })
             .move({
                 duration: 50,
                 origin: element,
@@ -169,7 +169,7 @@ class Controller {
         return {
             driver: null,
             scrollState: -1,
-            driverPid: 0
+            pid: -1
         };
     }
     isCreating = false;
@@ -343,23 +343,31 @@ class Controller {
      */
     async closeBrowser(id) {
         let theId = id;
-        try {
-            console.log(`1 close ${id}`);
+        if (this.browsers[theId] == undefined) {
+            return true;
+        }
 
-            if (this.browsers[theId] == undefined || this.browsers[theId] == null) {
-                console.log(`2 close ${id}`);
+        try {
+            console.log(`1 close ${theId}`);
+            this.browsers[theId].pid = -1;
+            this.browsers[theId].scrollState = -1;
+
+            if (this.browsers[theId] == null) {
+                console.log(`2 close ${theId}`);
                 return true;
             }
 
             if (this.browsers[theId].driver) {
-                console.log(`3 close ${id}`);
+                console.log(`3 close ${theId}`);
                 this.browsers[theId].driver.close();
                 this.browsers[theId].driver = null;
                 this.browsers[theId] = null;
             }
-            console.log(`4 close ${id}`);
+
+            console.log(`4 close ${theId}`);
             return true;
         } catch (error) {
+            console.error(`close ${theId} error:`);
             console.error(error);
             return false;
         }
@@ -579,8 +587,8 @@ class Controller {
             }
 
             await driver.actions({
-                    bridge: true
-                })
+                bridge: true
+            })
                 .move({
                     duration: 50,
                     origin: el,
@@ -631,8 +639,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                        bridge: true
-                    })
+                    bridge: true
+                })
                     .move({
                         duration: 50,
                         origin: el,
