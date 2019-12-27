@@ -362,14 +362,15 @@ class Controller {
                 console.log(`3 close ${theId}`);
                 this.browsers[theId].driver.close();
                 this.browsers[theId].driver = null;
-                this.browsers[theId] = null;
             }
 
+            this.browsers[theId] = null;
             console.log(`4 close ${theId}`);
             return true;
         } catch (error) {
             console.error(`close ${theId} error:`);
             console.error(error);
+            this.browsers[theId] = null;
             return false;
         }
     }
