@@ -135,8 +135,8 @@ class Controller {
         await driver.executeScript(`window.scrollBy(0, ${reminderGap})`);
 
         await driver.actions({
-            bridge: true
-        })
+                bridge: true
+            })
             .move({
                 duration: 50,
                 origin: element,
@@ -161,8 +161,6 @@ class Controller {
 
         return result;
     }
-
-    allUsedBrowserPids = [];
 
     /**
      * @return {{driver: WebDriver|null, scrollState: number, pid: number}}
@@ -189,8 +187,8 @@ class Controller {
             await sleep(50);
         }
         this.isCreating = true;
-        // let lastBrowserPids = await this.getAllDriverId();
-        // console.log(theId, lastBrowserPids);
+        let lastBrowserPids = await this.getAllDriverId();
+        console.log(theId, lastBrowserPids);
 
         try {
             const TIMEOUT = 1000 * 5;
@@ -250,15 +248,10 @@ class Controller {
                 });
 
                 let newBrowserPids = (await Utils.getPID(usedBrowser)).map(p => p.pid);
-                // console.log('new', theId, newBrowserPids);
-                let createdPid = newBrowserPids.filter(v => !this.allUsedBrowserPids.includes(v));
+                console.log('new', theId, newBrowserPids);
+                let createdPid = newBrowserPids.filter(v => !lastBrowserPids.includes(v));
                 if (createdPid.length > 0) {
-                    let pid = createdPid[0];
-                    this.browsers[theId].pid = pid;
-                    this.allUsedBrowserPids.push(pid);
-                }
-                if (createdPid.length > 1) {
-                    console.warn(`Get too many browser pid: ${createdPid}`);
+                    this.browsers[theId].pid = createdPid[0];
                 }
                 console.log(`${theId} => ${this.browsers[theId].pid}`);
             }
@@ -586,8 +579,8 @@ class Controller {
             }
 
             await driver.actions({
-                bridge: true
-            })
+                    bridge: true
+                })
                 .move({
                     duration: 50,
                     origin: el,
@@ -638,8 +631,8 @@ class Controller {
                 await el.click();
             } else {
                 await driver.actions({
-                    bridge: true
-                })
+                        bridge: true
+                    })
                     .move({
                         duration: 50,
                         origin: el,
