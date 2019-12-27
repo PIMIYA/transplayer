@@ -154,8 +154,9 @@ class Controller {
         let result = [];
         var keys = Object.keys(this.browsers);
         keys.forEach(key => {
-            if (this.browsers[parseInt(key)]) {
-                result.push(this.browsers[parseInt(key)].pid);
+            let id = parseInt(key);
+            if (this.browsers[id] && this.browsers[id].driver != null) {
+                result.push(this.browsers[id].pid);
             }
         });
 
