@@ -14,8 +14,8 @@ require('events').EventEmitter.prototype._maxListeners = 0;
 
 let controller = new Controller();
 
-let display_width = 1920;
-let display_height = 1080;
+let display_width = 2400;
+let display_height = 1920;
 let page_flag = 0;
 
 
@@ -27,13 +27,13 @@ let task = {
             await controller.focusBrowser(2);
             let url_elephant_w = await controller.getGoogleNewsSearchResultUrl(2, 0);
             await controller.goTo(2, url_elephant_w);
-            // await controller.setBrowserRect(2, {
-            //   x: display_width * 0.6,
-            //   y: display_height * 0.2,
-            //   width: display_width * 0.4,
-            //   height: display_height * 0.5
-            // })
-            // await delay(500);
+            await controller.setBrowserRect(2, {
+                x: display_width / 2 + 25,
+                y: display_height / 6,
+                width: display_width / 2 - 50,
+                height: display_height / 2
+            })
+            await delay(500);
 
             await controller.goTo(3, 'https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829');
             await controller.focusBrowser(2);
@@ -41,12 +41,12 @@ let task = {
             let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
             await delay(500);
             controller.goTo(3, url_elephant_a);
-            // await controller.setBrowserRect(3, {
-            //   x: display_width * 0.2,
-            //   y: display_height * 0.7,
-            //   width: display_width * 0.4,
-            //   height: display_height * 0.5
-            // })
+            await controller.setBrowserRect(3, {
+                x: -100,
+                y: display_height / 2 + 100,
+                width: display_width / 1.8,
+                height: display_height / 2 + 100
+            })
         }
     },
     65: {
@@ -87,7 +87,14 @@ let task = {
             let url_tower = 'https://www.youtube.com/watch?v=lPjzsGF5opY&wide=1';
             // controller.goTo(5, url_tower + '&wide=1&autoplay=1');
             await controller.goTo(5, url_tower);
+            await controller.setBrowserRect(5, {
+                x: display_width / 3 + 100,
+                y: -100,
+                width: display_width / 1.5,
+                height: display_height / 2
+            })
             await controller.playYoutubeVideo(5);
+            await controller.focusBrowser(5);
 
             controller.scrollTo(4, 3000);
         }
@@ -114,7 +121,7 @@ let task = {
             controller.scrollTo(4, 3000);
         }
     },
-    340: {
+    325: {
         action: async () => {
             await controller.breakScroll(4);
             // //switch to google search
@@ -139,10 +146,17 @@ let task = {
 
             let url_el_violent = await controller.getLinkUrl(6, By.id('video-title'), 0);
             await controller.goTo(6, url_el_violent + '&wide=1');
+            await controller.setBrowserRect(6, {
+                x: display_width / 3 + 100,
+                y: -100,
+                width: display_width / 1.5,
+                height: display_height / 2
+            })
             await controller.playYoutubeVideo(6);
+            await controller.focusBrowser(6);
         }
     },
-    345: {
+    335: {
         action: async () => {
             //switch to youtube search
             await controller.goTo(7, 'https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D');
@@ -151,7 +165,14 @@ let task = {
 
             let url_el_violent_y = await controller.getLinkUrl(7, By.id('video-title'), 1);
             await controller.goTo(7, url_el_violent_y + '&wide=1');
+            await controller.setBrowserRect(7, {
+                x: -100,
+                y: display_height / 2 + 100,
+                width: display_width / 1.5,
+                height: display_height / 1.5
+            })
             await controller.playYoutubeVideo(7);
+            await controller.focusBrowser(7);
         }
     },
     400: {
@@ -180,7 +201,14 @@ let task = {
             // let url_hae = await controller.getLinkUrl(10, By.id('video-title'), 0);
             let url_hae = 'https://www.youtube.com/watch?v=dDWaSN_lMPU';
             await controller.goTo(10, url_hae + '&wide=1');
+            await controller.setBrowserRect(10, {
+                x: -100,
+                y: -100,
+                width: display_width / 1.5,
+                height: display_height / 2
+            })
             controller.playYoutubeVideo(10);
+            await controller.focusBrowser(10);
 
             controller.scrollTo(4, 3000);
         }
@@ -202,7 +230,14 @@ let task = {
 
             let url_powder_r = await controller.getLinkUrl(12, By.id('video-title'), 0);
             await controller.goTo(12, url_powder_r + '&t=3m0s&wide=1');
+            await controller.setBrowserRect(12, {
+                x: display_width / 3 + 100,
+                y: -50,
+                width: display_width / 1.5,
+                height: display_height / 1.5
+            })
             controller.playYoutubeVideo(12);
+            await controller.focusBrowser(12);
 
             await controller.goTo(11, 'https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D');
             await controller.focusBrowser(12);
@@ -210,7 +245,15 @@ let task = {
 
             let url_powder_l = await controller.getLinkUrl(11, By.id('video-title'), 0);
             await controller.goTo(11, url_powder_l + '&wide=1');
+            await controller.setBrowserRect(11, {
+                x: -100,
+                y: display_height / 2 + 100,
+                width: display_width / 1.5,
+                height: display_height / 1.5
+            })
             controller.playYoutubeVideo(11);
+            await controller.focusBrowser(11);
+
 
             controller.scrollTo(4, 3000);
         }
