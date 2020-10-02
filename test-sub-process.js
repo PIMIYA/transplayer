@@ -10,26 +10,28 @@ const delay = (interval) => {
     });
 }
 
-if (process.platform === "win32") {
-    var rl = require("readline").createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+// if (process.platform === "win32") {
+//     var rl = require("readline").createInterface({
+//         input: process.stdin,
+//         output: process.stdout
+//     });
 
-    rl.on("SIGINT", function () {
-        process.emit("SIGINT");
-    });
-}
+//     rl.on("SIGINT", function () {
+//         process.emit("SIGINT");
+//     });
+// }
 
-process.on("SIGINT", function () {
-    // graceful shutdown
-    isCancelRequired = true;
-    if (webProcess) {
-        webProcess.kill();
-    }
-    console.log('shutdown...');
-    process.exit();
-});
+// console.log(process.platform);
+
+// process.on("SIGINT", function () {
+//     // graceful shutdown
+//     isCancelRequired = true;
+//     if (webProcess) {
+//         webProcess.kill();
+//     }
+//     console.log('shutdown...');
+//     process.exit();
+// });
 
 let currentTime = 770;
 
