@@ -32,6 +32,7 @@
     "electron-packager": "^14.1.1"
   },
   "dependencies": {
+    "hide-cursor": "0.0.1",
     "node-gyp": "^6.0.0",
     "osc-js": "^2.1.0",
     "selenium-webdriver": "^4.0.0-alpha.7"

@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require("electron");
 
 require("events").EventEmitter.prototype._maxListeners = 0;
+var x = require("hide-cursor");
 
 let win;
 let display_width;
@@ -69,6 +70,7 @@ app.on("ready", () => {
   console.log("display_w:", display_width, "display_h", display_height);
 
   setTimeout(createWindow, 500);
+  x.hide();
   //createWindow();
 });
 
