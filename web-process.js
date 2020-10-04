@@ -137,13 +137,13 @@ let task = {
       //switch to youtube search
       await controller.goTo(
         7,
-        "https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D"
+        "https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAhAB"
       );
 
       let url_el_violent_y = await controller.getLinkUrl(
         7,
         By.id("video-title"),
-        1
+        2
       );
       await controller.goTo(7, url_el_violent_y + "&wide=1");
       await controller.playYoutubeVideo(7);
