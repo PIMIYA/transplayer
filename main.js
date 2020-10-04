@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require("electron");
-
+require("v8-compile-cache");
 require("events").EventEmitter.prototype._maxListeners = 0;
-var x = require("hide-cursor");
 
 let win;
 let display_width;
@@ -24,7 +23,7 @@ function createWindow() {
     enableLargerThanScreen: false,
     webPreferences: {
       nodeIntegration: false,
-      nodeIntegrationInWorker: false,
+      nodeIntegrationInWorker: true,
     },
   });
 
@@ -38,6 +37,7 @@ function createWindow() {
 
   // Open the DevTools.
   //win.webContents.openDevTools();
+  //win.location.replace("chrome://gpu");
 
   // Emitted when the window is closed.
   win.on("closed", async () => {
@@ -70,7 +70,6 @@ app.on("ready", () => {
   console.log("display_w:", display_width, "display_h", display_height);
 
   setTimeout(createWindow, 500);
-  x.hide();
   //createWindow();
 });
 

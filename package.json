@@ -5,7 +5,7 @@
   "description": "transducent & mouse click through player",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron --enable-accelerated-video --ignore-gpu-blacklist --enable-native-gpu-memory-buffers --enable-gpu-rasterization .",
     "startWithTransparentOption": "electron --enable-transparent-visuals .",
     "startWithAllOptions": "electron --enable-transparent-visuals --disable-gpu .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
@@ -32,9 +32,9 @@
     "electron-packager": "^14.1.1"
   },
   "dependencies": {
-    "hide-cursor": "0.0.1",
     "node-gyp": "^6.0.0",
     "osc-js": "^2.1.0",
-    "selenium-webdriver": "^4.0.0-alpha.7"
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "v8-compile-cache": "^2.1.1"
   }
 }
