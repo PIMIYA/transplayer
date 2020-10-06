@@ -64,7 +64,7 @@ let task = {
         16,
         "https://www.google.com/search?q=pawang&tbm=isch&ved=2ahUKEwiFv6WR2Z7sAhUNUJQKHXXuDDAQ2-cCegQIABAA&oq=pawang&gs_lcp=CgNpbWcQAzICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCABQ8ydY8ydghS5oAHAAeACAAS-IAS-SAQExmAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=Ybh7X8WKDY2g0QT13LOAAw&bih=798&biw=1440"
       );
-      controller.scrollTo(16, 9000);
+      controller.scrollTo(16, 3000);
     },
   },
   280: {

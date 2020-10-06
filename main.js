@@ -37,7 +37,6 @@ function createWindow() {
 
   // Open the DevTools.
   //win.webContents.openDevTools();
-  //win.location.replace("chrome://gpu");
 
   // Emitted when the window is closed.
   win.on("closed", async () => {
@@ -74,7 +73,7 @@ app.on("ready", () => {
 });
 
 //enable hardware acceleration
-app.disableHardwareAcceleration(false);
+app.disableHardwareAcceleration(true);
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
