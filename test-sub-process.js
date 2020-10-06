@@ -48,6 +48,7 @@ let currentTime = 770;
 
     webProcess.send({
       currentTime: currentTime,
+      //currentTime: 320,
     });
 
     await delay(1000);
