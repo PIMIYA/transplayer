@@ -36,9 +36,13 @@ let task = {
       controller.scrollTo(13, 9000);
     },
   },
-  120: {
+  85: {
     action: async () => {
       await controller.closeBrowser(14);
+    },
+  },
+  120: {
+    action: async () => {
       await controller.goTo(
         15,
         "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5"
@@ -46,7 +50,7 @@ let task = {
       controller.scrollTo(15, 9000);
     },
   },
-  122: {
+  140: {
     action: async () => {
       await controller.breakScroll(13);
       await controller.goTo(
@@ -57,9 +61,13 @@ let task = {
       controller.scrollTo(13, 9000);
     },
   },
-  230: {
+  190: {
     action: async () => {
       await controller.closeBrowser(15);
+    },
+  },
+  230: {
+    action: async () => {
       await controller.goTo(
         16,
         "https://www.google.com/search?q=pawang&tbm=isch&ved=2ahUKEwiFv6WR2Z7sAhUNUJQKHXXuDDAQ2-cCegQIABAA&oq=pawang&gs_lcp=CgNpbWcQAzICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCABQ8ydY8ydghS5oAHAAeACAAS-IAS-SAQExmAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=Ybh7X8WKDY2g0QT13LOAAw&bih=798&biw=1440"
@@ -77,9 +85,13 @@ let task = {
       controller.scrollTo(13, 9000);
     },
   },
-  320: {
+  290: {
     action: async () => {
       await controller.closeBrowser(16);
+    },
+  },
+  320: {
+    action: async () => {
       await controller.goTo(
         17,
         "https://www.google.com/search?q=elephant+attack&tbm=isch&ved=2ahUKEwiI_YDj2Z7sAhXXyosBHbtbAykQ2-cCegQIABAA&oq=elephant+attac&gs_lcp=CgNpbWcQARgAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADoGCAAQChAYUPO2CFjpwAhgs8wIaAFwAHgAgAE2iAGUApIBATaYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=DLl7X4jHI9eVr7wPu7eNyAI&bih=798&biw=1440"
@@ -97,9 +109,13 @@ let task = {
       controller.scrollTo(13, 9000);
     },
   },
-  410: {
+  380: {
     action: async () => {
       await controller.closeBrowser(17);
+    },
+  },
+  410: {
+    action: async () => {
       await controller.goTo(
         18,
         "https://www.google.com/search?q=history+and+ethnography+museum&tbm=isch&ved=2ahUKEwjJqNbU2p7sAhVKXpQKHdBfCtwQ2-cCegQIABAA&oq=history+and+ethno&gs_lcp=CgNpbWcQARgAMgIIADIECAAQGDoFCAAQsQM6BAgAEEM6BggAEAUQHlCf_AVYwNkGYI7rBmgBcAB4AIABOYgBuAWSAQIxNZgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=-rl7X8nDOsq80QTQv6ngDQ&bih=798&biw=1440"
@@ -117,7 +133,7 @@ let task = {
       controller.scrollTo(13, 9000);
     },
   },
-  530: {
+  500: {
     action: async () => {
       await controller.closeBrowser(18);
     },
@@ -132,7 +148,7 @@ let task = {
       controller.scrollTo(19, 9000);
     },
   },
-  778: {
+  610: {
     action: async () => {
       await controller.breakScroll(13);
       await controller.goTo(
@@ -142,14 +158,9 @@ let task = {
       controller.scrollTo(13, 9000);
     },
   },
-  779: {
+  640: {
     action: async () => {
       await controller.closeBrowser(19);
-      await controller.goTo(
-        13,
-        "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
-      );
-      controller.scrollTo(13, 9000);
     },
   },
   770: {
@@ -168,6 +179,13 @@ let task = {
         });
         controller.SCROLL_GAP = 1;
         controller.SCROLL_INTERVAL = 10;
+        controller.scrollTo(13, 9000);
+      } else {
+        await controller.closeBrowser(19);
+        await controller.goTo(
+          13,
+          "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
+        );
         controller.scrollTo(13, 9000);
       }
     },
