@@ -155,6 +155,7 @@ let task = {
   770: {
     action: async () => {
       if (page_flag == 0) {
+        page_flag = 1;
         await controller.goTo(
           13,
           "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
