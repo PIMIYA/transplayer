@@ -30,7 +30,7 @@ let task = {
       await delay(500);
 
       await controller.goTo(
-        3,
+        3,c
         "https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829"
       );
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
@@ -77,7 +77,7 @@ let task = {
       let url_tower = "https://www.youtube.com/watch?v=lPjzsGF5opY";
 
       await controller.goTo(5, url_tower + "&wide=1");
-
+      await delay(500);
       await controller.playYoutubeVideo(5);
 
       controller.scrollTo(4, 3000);
@@ -129,6 +129,7 @@ let task = {
         0
       );
       await controller.goTo(6, url_el_violent + "&wide=1");
+      await delay(500);
       await controller.playYoutubeVideo(6);
     },
   },
@@ -146,6 +147,7 @@ let task = {
         2
       );
       await controller.goTo(7, url_el_violent_y + "&wide=1");
+      await delay(500);
       await controller.playYoutubeVideo(7);
     },
   },
@@ -177,6 +179,7 @@ let task = {
 
       let url_hae = "https://www.youtube.com/watch?v=dDWaSN_lMPU";
       await controller.goTo(10, url_hae + "&wide=1");
+      await delay(500);
       await controller.playYoutubeVideo(10);
 
       controller.scrollTo(4, 3000);
@@ -207,7 +210,7 @@ let task = {
         0
       );
       await controller.goTo(12, url_powder_r + "&t=3m0s" + "&wide=1");
-
+      await delay(500);
       await controller.playYoutubeVideo(12);
 
       await controller.goTo(
@@ -221,7 +224,7 @@ let task = {
         0
       );
       await controller.goTo(11, url_powder_l + "&wide=1");
-
+      await delay(500);
       await controller.playYoutubeVideo(11);
 
       controller.scrollTo(4, 3000);

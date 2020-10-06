@@ -24,7 +24,8 @@ osc.on("/test/random", (message) => {
 
 const child_process = require("child_process");
 
-let webProcess = child_process.fork("./web-process.js");
+//let webProcess = child_process.fork("./web-process.js");
+let webProcess = child_process.fork("./web-process-new.js");
 
 if (process.platform === "win32") {
   var rl = require("readline").createInterface({
