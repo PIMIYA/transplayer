@@ -30,7 +30,7 @@ let task = {
       await delay(500);
 
       await controller.goTo(
-        3,c
+        3,
         "https://www.google.com/search?q=elephant&source=lnms&tbm=nws&sa=X&ved=0ahUKEwil5JaE7dflAhWwBKYKHRABCqYQ_AUIEigC&biw=1064&bih=1829"
       );
       let url_elephant_a = await controller.getGoogleNewsSearchResultUrl(3, 2);
