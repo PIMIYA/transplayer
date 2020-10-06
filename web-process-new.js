@@ -14,7 +14,7 @@ let controller = new Controller();
 
 let display_width = 2160;
 let display_height = 1920;
-
+let page_flag = 0;
 //remove all focus function for linux platform
 let task = {
   10: {
@@ -145,23 +145,30 @@ let task = {
   779: {
     action: async () => {
       await controller.closeBrowser(19);
-    },
-  },
-  770: {
-    action: async () => {
       await controller.goTo(
         13,
         "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
       );
-      await controller.setBrowserRect(13, {
-        x: 0,
-        y: 0,
-        width: display_width,
-        height: display_height,
-      });
-      controller.SCROLL_GAP = 1;
-      controller.SCROLL_INTERVAL = 10;
       controller.scrollTo(13, 9000);
+    },
+  },
+  770: {
+    action: async () => {
+      if (page_flag == 0) {
+        await controller.goTo(
+          13,
+          "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
+        );
+        await controller.setBrowserRect(13, {
+          x: 0,
+          y: 0,
+          width: display_width,
+          height: display_height,
+        });
+        controller.SCROLL_GAP = 1;
+        controller.SCROLL_INTERVAL = 10;
+        controller.scrollTo(13, 9000);
+      }
     },
   },
 };
