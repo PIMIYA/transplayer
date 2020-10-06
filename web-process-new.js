@@ -90,7 +90,7 @@ let task = {
         width: 1670,
         height: 1750,
       });
-      controller.scrollTo(16, 3000);
+      controller.scrollTo(16, 9000);
     },
   },
   280: {
@@ -160,7 +160,7 @@ let task = {
         13,
         "https://www.google.com/search?q=history+gunpowder&tbm=isch&ved=2ahUKEwjZpJ28257sAhVL0ZQKHfSyBSwQ2-cCegQIABAA&oq=history+gunpowder&gs_lcp=CgNpbWcQAzICCAAyBggAEAgQHjIGCAAQCBAeMgYIABAIEB5Q3wpY0xtg1R1oAHAAeACAAbcBiAGlBZIBBDEzLjGYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=1Lp7X9nqB8ui0wT05ZbgAg&bih=798&biw=1440"
       );
-      controller.scrollTo(13, 9000);
+      controller.scrollTo(13, 12000);
     },
   },
   500: {
