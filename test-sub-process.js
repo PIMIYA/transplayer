@@ -1,14 +1,15 @@
-const child_process = require('child_process');
+const child_process = require("child_process");
 
-let webProcess = child_process.fork('./web-process.js');
+//let webProcess = child_process.fork('./web-process.js');
+let webProcess = child_process.fork("./web-process-new.js");
 
 let isCancelRequired = false;
 
 const delay = (interval) => {
-    return new Promise((resolve) => {
-        setTimeout(resolve, interval)
-    });
-}
+  return new Promise((resolve) => {
+    setTimeout(resolve, interval);
+  });
+};
 
 // if (process.platform === "win32") {
 //     var rl = require("readline").createInterface({
@@ -35,26 +36,24 @@ const delay = (interval) => {
 
 let currentTime = 770;
 
-
-
 (async () => {
-    while (true) {
-        if (isCancelRequired) {
-            break;
-        }
-
-        if (webProcess.killed) {
-            break;
-        }
-
-        webProcess.send({
-            currentTime: currentTime
-        });
-
-        await delay(1000);
-        currentTime++;
-        if (currentTime >= 781) {
-            currentTime = 0;
-        }
+  while (true) {
+    if (isCancelRequired) {
+      break;
     }
+
+    if (webProcess.killed) {
+      break;
+    }
+
+    webProcess.send({
+      currentTime: currentTime,
+    });
+
+    await delay(1000);
+    currentTime++;
+    if (currentTime >= 781) {
+      currentTime = 0;
+    }
+  }
 })();

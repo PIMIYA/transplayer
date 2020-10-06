@@ -14,30 +14,146 @@ let controller = new Controller();
 
 let display_width = 2160;
 let display_height = 1920;
-let page_flag = 0;
 
 //remove all focus function for linux platform
 let task = {
   10: {
     action: async () => {
       await controller.goTo(
-        2,
+        14,
         "https://www.google.com/search?q=elephant%20news&tbm=isch&hl=en&hl=en&tbs=qdr:y&client=ubuntu&hs=OJ7&sa=X&ved=0CAQQpwVqFwoTCKjqn4-zluwCFQAAAAAdAAAAABAD&biw=1797&bih=1370"
       );
-
-      controller.SCROLL_GAP = 1;
-      controller.SCROLL_INTERVAL = 10;
-      controller.scrollTo(2, 3000);
+      controller.scrollTo(14, 9000);
     },
   },
   65: {
     action: async () => {
-      await controller.closeBrowser(2);
+      await controller.breakScroll(13);
       await controller.goTo(
-        4,
+        13,
         "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNT_rUSmalUS6R34zPF8dOP-8X2iGw%3A1572500280528&sa=1&ei=OHO6Xc_rH-S2mAWoobRQ&q=map+of+melaka+fort&oq=map+of+melaka+fort&gs_l=img.3...2682.4688..4911...0.0..0.75.359.7......0....1..gws-wiz-img.wi4Ueu-el5k&ved=0ahUKEwjP54SF5MXlAhVkG6YKHagQDQoQ4dUDCAc&uact=5#imgrc=_"
       );
-      await controller.setBrowserRect(4, {
+      controller.scrollTo(13, 9000);
+    },
+  },
+  120: {
+    action: async () => {
+      await controller.closeBrowser(14);
+      await controller.goTo(
+        15,
+        "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5"
+      );
+      controller.scrollTo(15, 9000);
+    },
+  },
+  122: {
+    action: async () => {
+      await controller.breakScroll(13);
+      await controller.goTo(
+        13,
+        "https://www.google.com/search?q=starlink&tbm=isch&ved=2ahUKEwi7jsC72J7sAhVXAqYKHUfXBQEQ2-cCegQIABAA&oq=starlink&gs_lcp=CgNpbWcQAzICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAA6BAgAEEM6BQgAELEDUL_2Bljd_wZg3oEHaABwAHgAgAE4iAH3ApIBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=rbd7X_uDEteEmAXHrpcI&bih=798&biw=1440"
+      );
+
+      controller.scrollTo(13, 9000);
+    },
+  },
+  230: {
+    action: async () => {
+      await controller.closeBrowser(15);
+      await controller.goTo(
+        16,
+        "https://www.google.com/search?q=pawang&tbm=isch&ved=2ahUKEwiFv6WR2Z7sAhUNUJQKHXXuDDAQ2-cCegQIABAA&oq=pawang&gs_lcp=CgNpbWcQAzICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCABQ8ydY8ydghS5oAHAAeACAAS-IAS-SAQExmAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=Ybh7X8WKDY2g0QT13LOAAw&bih=798&biw=1440"
+      );
+      controller.scrollTo(16, 9000);
+    },
+  },
+  280: {
+    action: async () => {
+      await controller.breakScroll(13);
+      await controller.goTo(
+        13,
+        "https://www.google.com/search?q=elephant+in+keddah+or+corral+painting&tbm=isch&ved=2ahUKEwiYxsWU2Z7sAhX2wIsBHTe9AVsQ2-cCegQIABAA&oq=elephant+in+keddah+or+corral+painting&gs_lcp=CgNpbWcQAzoCCAA6BQgAELEDUI_hCFi2_Qlghv8JaAJwAHgAgAEviAHvDJIBAjM5mAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=aLh7X5jyAfaBr7wPt_qG2AU&bih=798&biw=1440"
+      );
+      controller.scrollTo(13, 9000);
+    },
+  },
+  320: {
+    action: async () => {
+      await controller.closeBrowser(16);
+      await controller.goTo(
+        17,
+        "https://www.google.com/search?q=elephant+attack&tbm=isch&ved=2ahUKEwiI_YDj2Z7sAhXXyosBHbtbAykQ2-cCegQIABAA&oq=elephant+attac&gs_lcp=CgNpbWcQARgAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADoGCAAQChAYUPO2CFjpwAhgs8wIaAFwAHgAgAE2iAGUApIBATaYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=DLl7X4jHI9eVr7wPu7eNyAI&bih=798&biw=1440"
+      );
+      controller.scrollTo(17, 9000);
+    },
+  },
+  335: {
+    action: async () => {
+      await controller.breakScroll(13);
+      await controller.goTo(
+        13,
+        "https://www.google.com/search?q=elephant+bone+&tbm=isch&ved=2ahUKEwjw_aLT2p7sAhV0xYsBHfFDDXwQ2-cCegQIABAA&oq=elephant+bone+&gs_lcp=CgNpbWcQAzIECAAQQzICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIAFCvDFivDGCND2gAcAB4AIABMYgBMZIBATGYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=-Ll7X_ChAfSKr7wP8Ye14Ac&bih=798&biw=1440"
+      );
+      controller.scrollTo(13, 9000);
+    },
+  },
+  410: {
+    action: async () => {
+      await controller.closeBrowser(17);
+      await controller.goTo(
+        18,
+        "https://www.google.com/search?q=history+and+ethnography+museum&tbm=isch&ved=2ahUKEwjJqNbU2p7sAhVKXpQKHdBfCtwQ2-cCegQIABAA&oq=history+and+ethno&gs_lcp=CgNpbWcQARgAMgIIADIECAAQGDoFCAAQsQM6BAgAEEM6BggAEAUQHlCf_AVYwNkGYI7rBmgBcAB4AIABOYgBuAWSAQIxNZgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=-rl7X8nDOsq80QTQv6ngDQ&bih=798&biw=1440"
+      );
+      controller.scrollTo(18, 9000);
+    },
+  },
+  450: {
+    action: async () => {
+      await controller.breakScroll(13);
+      await controller.goTo(
+        13,
+        "https://www.google.com/search?q=history+gunpowder&tbm=isch&ved=2ahUKEwjZpJ28257sAhVL0ZQKHfSyBSwQ2-cCegQIABAA&oq=history+gunpowder&gs_lcp=CgNpbWcQAzICCAAyBggAEAgQHjIGCAAQCBAeMgYIABAIEB5Q3wpY0xtg1R1oAHAAeACAAbcBiAGlBZIBBDEzLjGYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=1Lp7X9nqB8ui0wT05ZbgAg&bih=798&biw=1440"
+      );
+      controller.scrollTo(13, 9000);
+    },
+  },
+  530: {
+    action: async () => {
+      await controller.closeBrowser(18);
+    },
+  },
+  580: {
+    action: async () => {
+      await controller.goTo(
+        19,
+        "https://www.google.com/search?q=gunpowder+explosion&tbm=isch&ved=2ahUKEwiU4syS3J7sAhWaAaYKHRH7DtAQ2-cCegQIABAA&oq=gunpowder+explosion&gs_lcp=CgNpbWcQAzIECAAQQzICCAAyBggAEAUQHjIGCAAQBRAeMgYIABAFEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBAgAEBgyBAgAEBg6BAgAEB5Q1QxY7xBglxRoAHAAeACAATCIAbYBkgEBNJgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=ibt7X9T5D5qDmAWR9ruADQ&bih=798&biw=1440"
+      );
+
+      controller.scrollTo(19, 9000);
+    },
+  },
+  778: {
+    action: async () => {
+      await controller.breakScroll(13);
+      await controller.goTo(
+        13,
+        "https://www.google.com/search?q=+explosion&tbm=isch&ved=2ahUKEwj04qOU3J7sAhVMAKYKHXHEAhwQ2-cCegQIABAA&oq=+explosion&gs_lcp=CgNpbWcQAzIECAAQQzIECAAQQzICCAAyAggAMgQIABBDMgIIADICCAAyBAgAEEMyAggAMgIIAFC7xgRYu8YEYMvOBGgAcAB4AIABNYgBNZIBATGYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jLt7X_TsL8yAmAXxiIvgAQ&bih=798&biw=1440"
+      );
+      controller.scrollTo(13, 9000);
+    },
+  },
+  779: {
+    action: async () => {
+      await controller.closeBrowser(19);
+    },
+  },
+  770: {
+    action: async () => {
+      await controller.goTo(
+        13,
+        "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
+      );
+      await controller.setBrowserRect(13, {
         x: 0,
         y: 0,
         width: display_width,
@@ -45,216 +161,7 @@ let task = {
       });
       controller.SCROLL_GAP = 1;
       controller.SCROLL_INTERVAL = 10;
-      controller.scrollTo(4, 3000);
-    },
-  },
-  120: {
-    action: async () => {
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQQsBvgZwqToOA7UAOcJN-8iSQVdw%3A1572495124539&sa=1&ei=FF-6XdexIJPpmAWzxIT4Ag&q=Telecom+tower&oq=Telecom+tower&gs_l=img.3..0i19l10.40579.40579..40997...0.0..0.47.47.1......0....2j1..gws-wiz-img.dr-TaZ-ge80&ved=0ahUKEwjXi7zq0MXlAhWTNKYKHTMiAS8Q4dUDCAc&uact=5"
-      );
-      controller.scrollTo(4, 3000);
-    },
-  },
-  122: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        5,
-        "https://www.google.com/search?client=firefox-b-d&biw=1082&bih=884&tbm=vid&ei=ITnEXcGXHaSUmAXZmJCoBg&q=telecom+tower&oq=telecom+tower&gs_l=psy-ab.3..0i19k1l10.2108.5144.0.5281.13.11.0.2.2.0.64.569.11.11.0....0...1c.1.64.psy-ab..0.13.578...0j0i131k1j0i3k1j0i10k1j0i30k1j0i10i19k1.0.BJHO7TxPpVw"
-      );
-
-      let url_tower = "https://www.youtube.com/watch?v=lPjzsGF5opY";
-
-      await controller.goTo(5, url_tower + "&wide=1");
-
-      await controller.playYoutubeVideo(5);
-
-      controller.scrollTo(4, 3000);
-    },
-  },
-  230: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?q=pawang&sxsrf=ACYBGNSJ5y1GyTyDLeNGuObzD3qF48m3BQ:1572502741554&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiO8MWa7cXlAhUSyIsBHWepAsMQ_AUIEigB&biw=1440&bih=798#imgrc=_"
-      );
-      controller.scrollTo(4, 3000);
-      await controller.closeBrowser(5);
-    },
-  },
-  280: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNRTTuCKjScRQgUZ4o6dyeqyGTGiPQ%3A1572502440570&sa=1&ei=qHu6XeW0IsqXr7wPoqWP8A8&q=Elephant+in+Keddah+or+Corral+painting&oq=Elephant+in+Keddah+or+Corral+painting&gs_l=img.3...12020.14881..15049...0.0..0.71.466.9......0....1..gws-wiz-img.3cGEqTlU0qw&ved=0ahUKEwjlqIOL7MXlAhXKy4sBHaLSA_4Q4dUDCAc&uact=5"
-      );
-      controller.scrollTo(4, 3000);
-    },
-  },
-  320: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?q=elephant+violent&sxsrf=ACYBGNT0ATjLqewVNHwCw8SUMYSK9txqZw:1572503984349&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiaiJTr8cXlAhUUJqYKHXNaBiMQ_AUIEigB&cshid=1572504257743713&biw=1440&bih=798&dpr=2"
-      );
-      controller.scrollTo(4, 3000);
-    },
-  },
-  325: {
-    action: async () => {
-      await controller.breakScroll(4);
-
-      await controller.goTo(
-        6,
-        "https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSAhAB"
-      );
-
-      let url_el_violent = await controller.getLinkUrl(
-        6,
-        By.id("video-title"),
-        0
-      );
-      await controller.goTo(6, url_el_violent + "&wide=1");
-      await controller.playYoutubeVideo(6);
-    },
-  },
-  335: {
-    action: async () => {
-      //switch to youtube search
-      await controller.goTo(
-        7,
-        "https://www.youtube.com/results?search_query=elephant+violent&sp=CAMSBAgFEAE%253D"
-      );
-
-      let url_el_violent_y = await controller.getLinkUrl(
-        7,
-        By.id("video-title"),
-        1
-      );
-      await controller.goTo(7, url_el_violent_y + "&wide=1");
-      await controller.playYoutubeVideo(7);
-    },
-  },
-  400: {
-    action: async () => {
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNRQ-iRUKfes8t7OW9tPyCdLPSycWg%3A1572504312313&sa=1&ei=-IK6XfXgEpW7wAOB6Y6QBA&q=elephant+bone&oq=elephant+bone&gs_l=img.3..0j0i30l3j0i8i30l4j0i5i30l2.47591.56597..57257...3.0..0.63.761.16......0....1..gws-wiz-img.....10..0i24j35i362i39j35i39j0i19j0i10i19.s3pUpO-Qsnc&ved=0ahUKEwj1vMWH88XlAhWVHXAKHYG0A0IQ4dUDCAc&uact=5"
-      );
-      controller.scrollTo(4, 7000);
-    },
-  },
-  420: {
-    action: async () => {},
-  },
-  450: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?q=History+and+Ethnography+Museum&sxsrf=ACYBGNQP5pBdzmb24hL-nwVLtFIrc2FYEQ:1572504658222&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjO972s9MXlAhW1yosBHWrLDWgQ_AUIEygC&biw=1440&bih=798"
-      );
-      controller.scrollTo(4, 3000);
-
-      await controller.breakScroll(4);
-
-      await controller.closeBrowser(6);
-      await controller.closeBrowser(7);
-
-      let url_hae = "https://www.youtube.com/watch?v=dDWaSN_lMPU";
-      await controller.goTo(10, url_hae + "&wide=1");
-      await controller.playYoutubeVideo(10);
-
-      controller.scrollTo(4, 3000);
-    },
-  },
-  530: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        4,
-        "https://www.google.com/search?biw=1440&bih=798&tbm=isch&sxsrf=ACYBGNQTmrNFatqqcWpUKdaoqrKdNB1KGA%3A1572504950513&sa=1&ei=doW6XcTzHoSFr7wPt9etqAk&q=history+gunpowder&oq=history+gunpowder&gs_l=img.3..0i19.29455.31762..32066...0.0..0.49.349.8......0....1..gws-wiz-img.......0i7i30j0i8i7i30.9XnTVluR7ZQ&ved=0ahUKEwjEhu639cXlAhWEwosBHbdrC5UQ4dUDCAc&uact=5#imgrc=_"
-      );
-      controller.scrollTo(4, 3000);
-      await controller.closeBrowser(10);
-    },
-  },
-  580: {
-    action: async () => {
-      await controller.breakScroll(4);
-      await controller.goTo(
-        12,
-        "https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D"
-      );
-
-      let url_powder_r = await controller.getLinkUrl(
-        12,
-        By.id("video-title"),
-        0
-      );
-      await controller.goTo(12, url_powder_r + "&t=3m0s" + "&wide=1");
-
-      await controller.playYoutubeVideo(12);
-
-      await controller.goTo(
-        11,
-        "https://www.youtube.com/results?search_query=best+GUNPOWDER+EXPLOSION&sp=CAM%253D"
-      );
-
-      let url_powder_l = await controller.getLinkUrl(
-        11,
-        By.id("video-title"),
-        0
-      );
-      await controller.goTo(11, url_powder_l + "&wide=1");
-
-      await controller.playYoutubeVideo(11);
-
-      controller.scrollTo(4, 3000);
-    },
-  },
-  778: {
-    action: async () => {
-      await controller.closeBrowser(11);
-    },
-  },
-  779: {
-    action: async () => {
-      await controller.closeBrowser(12);
-    },
-  },
-  770: {
-    action: async () => {
-      await controller.closeBrowser(4);
-
-      if (page_flag == 0) {
-        page_flag = 1;
-        await controller.goTo(
-          0,
-          "https://www.google.com/search?q=world%20news&tbm=isch&hl=en&hl=en&tbs=qdr:d&client=ubuntu&hs=OJ7&sa=X&ved=0CAIQpwVqFwoTCODSq6-yluwCFQAAAAAdAAAAABAC&biw=1797&bih=1370"
-        );
-        await controller.setBrowserRect(0, {
-          x: 0,
-          y: 0,
-          width: display_width,
-          height: display_height,
-        });
-
-        controller.scrollTo(0, 3000);
-      } else {
-        await controller.refresh(0);
-
-        await delay(500);
-
-        controller.SCROLL_GAP = 1;
-        controller.SCROLL_INTERVAL = 10;
-        controller.scrollTo(0, 3000);
-      }
+      controller.scrollTo(13, 9000);
     },
   },
 };
