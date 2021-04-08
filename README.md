@@ -2,8 +2,14 @@
 
 ## Setup
 
+### in the directory
+
 ```sh
-./setup.sh
+sudo chmod +x setup.sh
+```
+
+```sh
+sudo ./setup.sh
 ```
 
 ```sh
