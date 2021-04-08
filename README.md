@@ -6,6 +6,18 @@
 ./setup.sh
 ```
 
+```sh
+nvm install node
+```
+
+```sh
+sudo npm i pm2 -g
+```
+
+```sh
+npm i
+```
+
 ## Run
 
 ```sh
