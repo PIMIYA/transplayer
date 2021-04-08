@@ -31,6 +31,20 @@ node sub-process.js
 ./play.sh
 ```
 
+## autoRun (after setup ubuntu 18.04 screen output and other configrations)
+
+```sh
+pm2 startup
+```
+
+copy & paste the autostart commands which return by the above command, remember to press enter execute it.
+
+```sh
+pm2 start sub-process.js
+pm2 start play.sh
+pm2 save
+```
+
 ## Note
 
 - 加快速度所使用的方法
