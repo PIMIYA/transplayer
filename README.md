@@ -2,19 +2,14 @@
 
 ## Setup
 
-```sh
-npm install
-# or
-yarn install
-```
+````sh
+./setup.sh
 
 ## Run
 
 ```sh
-npm start
-# or
-yarn start
-```
+node sub-process.js
+./play.sh
 
 ## Note
 
@@ -26,7 +21,7 @@ yarn start
 options.addArguments([
   "--user-data-dir=path-of-user-profile/{user-profile-name}"
 ]);
-```
+````
 
 - 隱藏視窗上方被控制的訊息欄位
 
@@ -42,10 +37,4 @@ options.excludeSwitches(["enable-automation"]);
 
 ## Know Issue
 
-- [ ] 瀏覽器視窗的 layer 順序
-- [ ] 廣告問題 安裝 extension 和新增 profile for webdriver
-- [ ] 更改瀏覽內容比例 可動態或是由 profile 設定
-- [ ] 背景視窗 scroll 圖片搜尋 但前方影片視窗繼續播影片
-- [ ] google search 影片 點最多人點閱 並且跳到連接撥放影片 in wide mode
-- [ ] youtube search 的改進 年度最多點閱與歷史最多點閱?
-- [ ] 圖片搜尋後 開始滑動面至最下層是否可以自動 fetch 更多(目前時間是夠的),視情況是否增加
+- [ ] Google 搜尋服務改變，須適度調適語碼。
