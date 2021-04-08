@@ -2,14 +2,16 @@
 
 ## Setup
 
-````sh
+```sh
 ./setup.sh
+```
 
 ## Run
 
 ```sh
 node sub-process.js
 ./play.sh
+```
 
 ## Note
 
@@ -19,9 +21,9 @@ node sub-process.js
 
 ```js
 options.addArguments([
-  "--user-data-dir=path-of-user-profile/{user-profile-name}"
+  "--user-data-dir=path-of-user-profile/{user-profile-name}",
 ]);
-````
+```
 
 - 隱藏視窗上方被控制的訊息欄位
 
