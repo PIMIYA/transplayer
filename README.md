@@ -21,7 +21,7 @@ nvm install node
 ```
 
 ```sh
-sudo npm i pm2 -g
+npm i pm2 -g
 ```
 
 ```sh
