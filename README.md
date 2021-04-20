@@ -13,6 +13,10 @@ sudo ./setup.sh
 ```
 
 ```sh
+source ~/.bashrc
+```
+
+```sh
 nvm install node
 ```
 
