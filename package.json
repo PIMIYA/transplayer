@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/PIMIYA/transplayer",
   "devDependencies": {
-    "electron": "^9.0.5",
+    "electron": "^11.5.0",
     "electron-packager": "^14.1.1"
   },
   "dependencies": {
