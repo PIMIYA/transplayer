@@ -221,6 +221,7 @@ class Controller {
           "--disable-infobars",
           "--disable-notifications",
           "--disable-features=InfiniteSessionRestore",
+          "--disable-session-crashed-bubble",
           //"--app=https://www.google.com",
           "--mute-audio",
         ];
@@ -229,7 +230,7 @@ class Controller {
           //let full_path = path.join(home_dir, "/AppData/Local/Google/Chrome/User Data", `se_${theId}`);
           let full_path = path.join(
             home_dir,
-            "/home/AppData/Local/Google/Chrome/User Data",
+            "~/.config/google-chrome/Default",
             `se_${theId}`
           );
           args.push(`--user-data-dir=${full_path}`);
