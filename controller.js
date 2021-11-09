@@ -222,6 +222,7 @@ class Controller {
           "--disable-notifications",
           "--disable-features=InfiniteSessionRestore",
           "--disable-session-crashed-bubble",
+          "--incognito",
           //"--app=https://www.google.com",
           "--mute-audio",
         ];
