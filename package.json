@@ -28,13 +28,13 @@
   },
   "homepage": "https://github.com/PIMIYA/transplayer",
   "devDependencies": {
-    "electron": "^9.0.5",
-    "electron-packager": "^14.1.1"
+    "electron": "^33.0.2",
+    "electron-packager": "^17.1.2"
   },
   "dependencies": {
-    "node-gyp": "^6.0.0",
-    "osc-js": "^2.1.0",
-    "selenium-webdriver": "^4.0.0-alpha.7",
-    "v8-compile-cache": "^2.1.1"
+    "node-gyp": "^10.2.0",
+    "osc-js": "^2.4.1",
+    "selenium-webdriver": "^4.26.0",
+    "v8-compile-cache": "^2.4.0"
   }
 }
